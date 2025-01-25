@@ -108,20 +108,20 @@
     </div>
   </div>
 
-  <!-- STEP 2：租房 or 買房 -->
-  <div id="step2" class="question-step">
-    <h3>問題 2：愛之窩</h3>
-    <p>親愛的，妳想要我們住在怎樣的地方？</p>
-    <div class="option-btn-group">
-      <button class="btn btn-primary option-btn" onclick="chooseHouse('rent')">
-        和你一起輕鬆租下小木屋
-      </button>
-      <button class="btn btn-primary option-btn" onclick="chooseHouse('buy')">
-        築起屬於我們的夢幻城堡
-      </button>
-      <button class="btn btn-secondary option-btn" onclick="chooseHouse('unknown')">不知道欸</button>
-    </div>
+<!-- STEP 2：租房 or 買房 -->
+<div id="step2" class="question-step">
+  <h3>問題 2：愛之窩</h3>
+  <p>親愛的，妳想要我們住在怎樣的地方？</p>
+  <div class="option-btn-group">
+    <button class="btn btn-primary option-btn" onclick="chooseHouse('rent')">
+      和你一起輕鬆租下小木屋
+    </button>
+    <button class="btn btn-primary option-btn" onclick="chooseHouse('buy')">
+      築起屬於我們的夢幻城堡
+    </button>
+    <button class="btn btn-secondary option-btn" onclick="chooseHouse('unknown')">不知道欸</button>
   </div>
+</div>
   <!-- STEP 2-1：租房細項 -->
   <div id="step2_rent" class="question-step">
     <h3>愛之窩 - 租房</h3>
@@ -272,62 +272,24 @@
     </div>
   </div>
 
-  <!-- STEP 13：通膨 (距退休 & 年增率) -->
-  <div id="step13" class="question-step">
-    <h2>Step 13: 通膨(最後一題)</h2>
-    <p>請選擇通膨條件，一旦選擇後就直接顯示最終結果</p>
-    <div class="option-btn-group">
+<!-- STEP 13：通膨 (距退休 & 年增率) -->
+<div id="step13" class="question-step">
+  <h2>Step 13: 通膨(最後一題)</h2>
+  <p>請選擇通膨條件，一旦選擇後就直接顯示最終結果</p>
+  <div class="option-btn-group">
     <button class="btn btn-primary option-btn" onclick="chooseInflation('10','2.50')">十年後，緩慢成長</button>
     <button class="btn btn-primary option-btn" onclick="chooseInflation('10','3.00')">十年後，中等成長</button>
     <button class="btn btn-primary option-btn" onclick="chooseInflation('10','3.50')">十年後，快速攀升</button>
     <button class="btn btn-primary option-btn" onclick="chooseInflation('unknown','unknown')">不知道欸</button>
-    </div>
-    <div id="resultArea">
-      <h3>結果出爐</h3>
-      <p>理想生活每年支出：<span id="currentCost" class="highlight">--</span> 元</p>
-      <p>換算單人月薪需達：<span id="singleSalary" class="highlight">--</span> 元</p>
-      <p>換算雙人月薪需達：<span id="doubleSalary" class="highlight">--</span> 元</p>
-      <p id="inflationWrap" style="display:none;">
-        考慮通膨十年後年支出：<span id="futureCost" class="highlight">--</span> 元
-      </p>
-    <div id="userAnswers" class="mt-4">
-      <h4>使用者回答：</h4>
-      <ul id="answersList" class="list-unstyled">
-        <!-- 回答內容會由JS動態生成 -->
-      </ul>
-    </div>
   </div>
+</div>
 
     <div class="option-btn-group">
-      <button class="btn btn-primary option-btn onclick="restart()">重新開始</button>
+      <button class="btn btn-primary option-btn" onclick="restart()">重新開始</button>
     </div>
   </div>
 
 
-  <!-- STEP 14：結果 (最後一頁) -->
-  <div id="resultSection" class="question-step">
-    <h3 class="text-center">問題都回答完啦！</h3>
-    <p class="text-center">點擊下方按鈕，顯示所有項目金額與未來支出</p>
-    <div class="text-center mb-3">
-      <button class="btn btn-success" onclick="showFuture()">顯示未來</button>
-    </div>
-
-    <!-- 結果區塊（點擊顯示未來後才填入） -->
-    <div id="finalResult" style="display:none;">
-      <h4>試算結果</h4>
-      <ul id="lineItems"></ul>
-      <hr>
-      <p>合計：<span id="currentCostText" class="result-highlight">--</span> 元 / 年</p>
-      <p id="inflationHint" style="display:none;">
-        若再過 <span id="yearGapText"></span>，可能需要
-        <span id="futureCostText" class="result-highlight">--</span> 元 / 年
-      </p>
-    </div>
-
-    <div class="text-center mt-3">
-    <button class="btn btn-primary option-btn" onclick="restart()">重新開始</button>
-    </div>
-  </div>
 </div><!-- container end -->
 
 <!-- 音樂播放控制區 -->
@@ -338,8 +300,8 @@
     <span id="volumeValue" style="margin-top: 5px; font-size: 14px; color: #555;">20%</span>
   </div>
 </div>
-<audio id="bgMusic" loop autoplay>
-  <source src="love_song.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop>
+  <source src="https://chiveswang.github.io/Happylifestyle/love_song.mp3" type="audio/mpeg">
   您的瀏覽器不支援音訊播放
 </audio>
 
@@ -347,6 +309,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     initSteps();
     showStep(1);
+    initMusicButton(); // 確保音樂按鈕也正確初始化
+    updateAnswers(); // 確保頁面加載時更新使用者的回答
 });
 document.addEventListener('DOMContentLoaded', () => {
     bgMusic.play().catch(() => {
@@ -436,36 +400,36 @@ function initSteps(){
   document.getElementById('resultSection')?.classList.remove('active');
 }
 
-function showStep(num){
+function showStep(num, subType) {
   // 隱藏所有 step
   document.querySelectorAll('.question-step').forEach(s => s.classList.remove('active'));
 
   // 特殊邏輯：step2 + houseType
-  if(num===2 && state.houseType==='rent'){
+  if (num === 2 && subType === 'rent') {
     document.getElementById('step2_rent').classList.add('active');
-    currentStep=2;
+    currentStep = 2;
     return;
   }
-  if(num===2 && state.houseType==='buy'){
+  if (num === 2 && subType === 'buy') {
     document.getElementById('step2_buy').classList.add('active');
-    currentStep=2;
+    currentStep = 2;
     return;
   }
-  if(num===2 && state.houseType==='unknown'){
+  if (num === 2 && state.houseType === 'unknown') {
     // 直接跳 step3
-    currentStep=3;
+    currentStep = 3;
     showStep(3);
     return;
   }
   // 一般情況
-  const target = document.getElementById('step'+num);
-  if(target){
+  const target = document.getElementById('step' + num);
+  if (target) {
     target.classList.add('active');
-    currentStep=num;
-  }else{
+    currentStep = num;
+  } else {
     // 若 step 不存在,嘗試下一個
-    if(num<=totalSteps){
-      showStep(num+1);
+    if (num <= totalSteps) {
+      showStep(num + 1);
     }
   }
 }
@@ -475,16 +439,17 @@ function nextStep(){
   showStep(currentStep);
 }
 
-function restart(){
-  Object.assign(state, {
-    children:0, houseType:'', rent:0, buy:0, car:0,
-    dateTimes:0, dateLevel:1, honeymoon:0, pet:0,
-    parents:0, wedding:0, weekend:0, hobby:0, backup:0,
-    yearGap:'0', inflationRate:'0'
-  });
-  initSteps();
-  currentStep=1;
-  showStep(1);
+function restart() {
+    Object.assign(state, {
+        children: 0, houseType: '', rent: 0, buy: 0, car: 0,
+        dateTimes: 0, dateLevel: 1, honeymoon: 0, pet: 0,
+        parents: 0, wedding: 0, weekend: 0, hobby: 0, backup: 0,
+        yearGap: '0', inflationRate: '0'
+    });
+    initSteps();
+    currentStep = 1;
+    showStep(1);
+    updateAnswers(); // 確保每次重新開始時更新使用者的回答
 }
 
 
@@ -498,13 +463,19 @@ function choose(key, val){
   nextStep();
 }
 
-function chooseHouse(choice){
-  if(choice==='unknown'){
-    state.houseType='unknown';
+function chooseHouse(choice) {
+  if (choice === 'unknown') {
+    state.houseType = 'unknown';
+    nextStep(); // 跳轉到下一步
   } else {
-    state.houseType=choice; // rent / buy
+    state.houseType = choice; // 設置為 'rent' 或 'buy'
+    // 根據選擇顯示相應的細項步驟
+    if (choice === 'rent') {
+      showStep(2, 'rent');
+    } else if (choice === 'buy') {
+      showStep(2, 'buy');
+    }
   }
-  nextStep();
 }
 
 // 紀念日次數
@@ -518,7 +489,6 @@ function chooseDateTimes(val){
 }
 
 /* ============ 計算邏輯 & 顯示 ============ */
-/**顯示使用者答案 **/
 function updateAnswers() {
   const answersList = document.getElementById('answersList');
   
@@ -541,7 +511,139 @@ function updateAnswers() {
         unknown: "不知道"
       }
     },
-    // Add mappings for other questions here
+    rent: {
+      question: "租房細項",
+      options: {
+        8000: "分租溫馨雅房",
+        16000: "浪漫雙人套房",
+        32000: "幸福家庭全戶",
+        unknown: "不知道"
+      }
+    },
+    buy: {
+      question: "買房細項",
+      options: {
+        60000: "交通方便蛋黃區",
+        45000: "鬧中取靜蛋白區",
+        30000: "清靜幽雅蛋殼區",
+        unknown: "不知道"
+      }
+    },
+    car: {
+      question: "愛車交通",
+      options: {
+        0: "一起牽手散步就好",
+        80000: "浪漫的機車載妳風來雨去",
+        120000: "一台浪漫小車",
+        240000: "兩台帥氣跑車",
+        unknown: "不知道"
+      }
+    },
+    dateTimes: {
+      question: "每月要過幾次紀念日",
+      options: {
+        3000: "1 次",
+        6000: "2 次",
+        9000: "3 次",
+        unknown: "不知道"
+      }
+    },
+    dateLevel: {
+      question: "紀念日慶祝方式",
+      options: {
+        0.3: "有你就好",
+        0.5: "簡單溫馨",
+        1: "盛重疼愛",
+        2: "極致浪漫",
+        unknown: "不知道"
+      }
+    },
+    honeymoon: {
+      question: "蜜月旅行",
+      options: {
+        30000: "國內旅遊",
+        50000: "日韓東南亞",
+        150000: "歐美文化之旅",
+        300000: "想看看世界的邊界",
+        unknown: "不知道"
+      }
+    },
+    pet: {
+      question: "寵物夥伴",
+      options: {
+        0: "不養寵物，專注於彼此",
+        2000: "一隻貓貓",
+        3000: "一隻狗狗",
+        5000: "多隻毛孩的熱鬧家庭",
+        unknown: "不知道"
+      }
+    },
+    parents: {
+      question: "父母關懷",
+      options: {
+        0: "逢年過節回家就好",
+        3000: "每月暖心補貼",
+        6000: "給爸媽多點關懷",
+        10000: "想好好孝順雙方父母",
+        unknown: "不知道"
+      }
+    },
+    wedding: {
+      question: "婚禮 / 週年慶典",
+      options: {
+        80000: "簡單溫馨，親友小聚",
+        200000: "華麗浪漫，宴請賓客",
+        400000: "夢幻海外婚禮",
+        unknown: "不知道"
+      }
+    },
+    weekend: {
+      question: "週末小旅行",
+      options: {
+        0: "在家慵懶，煮咖啡看電影",
+        2000: "偶爾近郊一日遊",
+        8000: "幾乎每週都要小旅行",
+        20000: "高質感生活，每次住精品民宿",
+        unknown: "不知道"
+      }
+    },
+    hobby: {
+      question: "夢想 / 興趣嗜好",
+      options: {
+        1000: "一起運動、保持健康",
+        3000: "一起學琴、學畫，陶冶性情",
+        8000: "極限挑戰，裝備與教練",
+        15000: "環遊世界清單，努力追夢",
+        unknown: "不知道"
+      }
+    },
+    backup: {
+      question: "備用金 / 驚喜基金",
+      options: {
+        1000: "一點點就好，應付小突發",
+        3000: "稍微多一點，好安心過日子",
+        8000: "想常常給妳浪漫驚喜",
+        unknown: "不知道"
+      }
+    },
+    yearGap: {
+      question: "通膨條件 (年數)",
+      options: {
+        "10": "十年後",
+        "20": "二十年後",
+        "30": "三十年後",
+        unknown: "不知道"
+      }
+    },
+    inflationRate: {
+      question: "通膨條件 (年增率)",
+      options: {
+        "2.50": "緩慢成長",
+        "3.00": "中等成長",
+        "3.50": "快速攀升",
+        unknown: "不知道"
+      }
+    }
   };
 
   answersList.innerHTML = Object.entries(state)
@@ -759,21 +861,29 @@ function initMusicButton(){
 }
 
 /* ============ DOM Ready ============ */
-document.addEventListener('DOMContentLoaded', ()=>{
-  initSteps();
-  showStep(1);
-  initMusicButton();
+document.addEventListener('DOMContentLoaded', () => {
+    initSteps();
+    showStep(1);
+    initMusicButton(); // 確保音樂按鈕也正確初始化
+    updateAnswers(); // 確保頁面加載時更新使用者的回答
+    
+    document.addEventListener('click', () => {
+        const bgMusic = document.getElementById('bgMusic');
+        bgMusic.play().catch(error => {
+            console.error("Playback failed:", error);
+        });
+    }, { once: true });
 });
 </script>
 
 <script>
 // Ensure all critical functions are defined globally
 
-window.chooseInflation = function(yearGap, rate) {
+function chooseInflation(yearGap, rate) {
   state.yearGap = yearGap;
   state.inflationRate = rate;
 
-  // Update current expenditure
+  // 更新當前支出
   const totalCost = calcTotalCost();
   const singleSalary = Math.ceil(totalCost / 12);
   const doubleSalary = Math.ceil(singleSalary / 2);
@@ -781,7 +891,7 @@ window.chooseInflation = function(yearGap, rate) {
   document.getElementById('doubleSalary').textContent = doubleSalary.toLocaleString();
   document.getElementById('currentCost').textContent = totalCost.toLocaleString();
 
-  // Update future expenditure if applicable
+  // 更新未來支出（如果適用）
   if (yearGap !== 'unknown' && rate !== 'unknown') {
     const futureCost = calcFutureCost(totalCost);
     document.getElementById('inflationWrap').style.display = 'block';
@@ -790,8 +900,10 @@ window.chooseInflation = function(yearGap, rate) {
     document.getElementById('inflationWrap').style.display = 'none';
   }
 
-  document.getElementById('resultArea').style.display = 'block'; // Show result area
-};
+  // 保存結果並跳轉到新的頁面
+  saveResults();
+  window.location.href = 'result.html'; // 假設新的頁面是 result.html
+}
 
 window.showFuture = function() {
   // Calculate total cost
