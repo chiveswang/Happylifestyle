@@ -91,7 +91,7 @@
 
 <div class="container">
   <h1 class="text-center mb-4">浪漫生活問答</h1>
-  <p class="text-center">
+  <p id="introText" class="text-center">
     讓我們一起想像未來的甜蜜生活，看看每年需要多少收入來實現這些夢想吧！
   </p>
 
@@ -414,28 +414,32 @@ function showStep(num, subType) {
   if (num === 2 && subType === 'rent') {
     document.getElementById('step2_rent').classList.add('active');
     currentStep = 2;
-    return;
-  }
-  if (num === 2 && subType === 'buy') {
+  } else if (num === 2 && subType === 'buy') {
     document.getElementById('step2_buy').classList.add('active');
     currentStep = 2;
-    return;
-  }
-  if (num === 2 && state.houseType === 'unknown') {
+  } else if (num === 2 && state.houseType === 'unknown') {
     // 直接跳 step3
     currentStep = 3;
     showStep(3);
-    return;
-  }
-  // 一般情況
-  const target = document.getElementById('step' + num);
-  if (target) {
-    target.classList.add('active');
-    currentStep = num;
   } else {
-    // 若 step 不存在,嘗試下一個
-    if (num <= totalSteps) {
-      showStep(num + 1);
+    // 一般情況
+    const target = document.getElementById('step' + num);
+    if (target) {
+      target.classList.add('active');
+      currentStep = num;
+    } else {
+      // 若 step 不存在,嘗試下一個
+      if (num <= totalSteps) {
+        showStep(num + 1);
+      }
+    }
+  }
+
+  // 當進入問題二時隱藏段文字
+  if (num >= 2) {
+    const introText = document.getElementById('introText');
+    if (introText) {
+      introText.style.display = 'none';
     }
   }
 }
@@ -460,13 +464,18 @@ function restart() {
         resultArea.style.display = 'none';
     }
 
+    // 顯示段文字
+    const introText = document.getElementById('introText');
+    if (introText) {
+        introText.style.display = 'block';
+    }
+
     // 初始化步驟並顯示第一步
     initSteps();
     currentStep = 1;
     showStep(1);
     updateAnswers(); // 更新使用者的回答
 }
-
 
 /* ============ 按鈕事件: choose / chooseHouse / ... ============ */
 function choose(key, val){
@@ -889,9 +898,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { once: true });
 });
-</script>
-
-<script>
+  
 // Ensure all critical functions are defined globally
 
 function chooseInflation(yearGap, rate) {
