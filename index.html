@@ -315,7 +315,7 @@
     <span id="volumeValue" style="margin-top: 5px; font-size: 14px; color: #555;">20%</span>
   </div>
 </div>
-<audio id="bgMusic" loop autoplay>
+<audio id="bgMusic" loop>
   <source src="https://chiveswang.github.io/Happylifestyle/love_song.mp3" type="audio/mpeg">
   您的瀏覽器不支援音訊播放
 </audio>
@@ -876,10 +876,18 @@ function initMusicButton(){
 }
 
 /* ============ DOM Ready ============ */
-document.addEventListener('DOMContentLoaded', ()=>{
-  initSteps();
-  showStep(1);
-  initMusicButton();
+document.addEventListener('DOMContentLoaded', () => {
+    initSteps();
+    showStep(1);
+    initMusicButton(); // 確保音樂按鈕也正確初始化
+    updateAnswers(); // 確保頁面加載時更新使用者的回答
+    
+    document.addEventListener('click', () => {
+        const bgMusic = document.getElementById('bgMusic');
+        bgMusic.play().catch(error => {
+            console.error("Playback failed:", error);
+        });
+    }, { once: true });
 });
 </script>
 
