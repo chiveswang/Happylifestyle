@@ -879,11 +879,11 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 // Ensure all critical functions are defined globally
 
-window.chooseInflation = function(yearGap, rate) {
+function chooseInflation(yearGap, rate) {
   state.yearGap = yearGap;
   state.inflationRate = rate;
 
-  // Update current expenditure
+  // 更新當前支出
   const totalCost = calcTotalCost();
   const singleSalary = Math.ceil(totalCost / 12);
   const doubleSalary = Math.ceil(singleSalary / 2);
@@ -891,7 +891,7 @@ window.chooseInflation = function(yearGap, rate) {
   document.getElementById('doubleSalary').textContent = doubleSalary.toLocaleString();
   document.getElementById('currentCost').textContent = totalCost.toLocaleString();
 
-  // Update future expenditure if applicable
+  // 更新未來支出（如果適用）
   if (yearGap !== 'unknown' && rate !== 'unknown') {
     const futureCost = calcFutureCost(totalCost);
     document.getElementById('inflationWrap').style.display = 'block';
@@ -900,8 +900,10 @@ window.chooseInflation = function(yearGap, rate) {
     document.getElementById('inflationWrap').style.display = 'none';
   }
 
-  document.getElementById('resultArea').style.display = 'block'; // Show result area
-};
+  // 保存結果並跳轉到新的頁面
+  saveResults();
+  window.location.href = 'result.html'; // 假設新的頁面是 result.html
+}
 
 window.showFuture = function() {
   // Calculate total cost
