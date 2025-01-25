@@ -272,32 +272,17 @@
     </div>
   </div>
 
-  <!-- STEP 13：通膨 (距退休 & 年增率) -->
-  <div id="step13" class="question-step">
-    <h2>Step 13: 通膨(最後一題)</h2>
-    <p>請選擇通膨條件，一旦選擇後就直接顯示最終結果</p>
-    <div class="option-btn-group">
+<!-- STEP 13：通膨 (距退休 & 年增率) -->
+<div id="step13" class="question-step">
+  <h2>Step 13: 通膨(最後一題)</h2>
+  <p>請選擇通膨條件，一旦選擇後就直接顯示最終結果</p>
+  <div class="option-btn-group">
     <button class="btn btn-primary option-btn" onclick="chooseInflation('10','2.50')">十年後，緩慢成長</button>
     <button class="btn btn-primary option-btn" onclick="chooseInflation('10','3.00')">十年後，中等成長</button>
     <button class="btn btn-primary option-btn" onclick="chooseInflation('10','3.50')">十年後，快速攀升</button>
     <button class="btn btn-primary option-btn" onclick="chooseInflation('unknown','unknown')">不知道欸</button>
-    </div>
-    <div id="resultArea">
-      <h3>結果出爐</h3>
-      <p>理想生活每年支出：<span id="currentCost" class="highlight">--</span> 元</p>
-      <p>換算單人月薪需達：<span id="singleSalary" class="highlight">--</span> 元</p>
-      <p>換算雙人月薪需達：<span id="doubleSalary" class="highlight">--</span> 元</p>
-      <p id="inflationWrap" style="display:none;">
-        考慮通膨十年後年支出：<span id="futureCost" class="highlight">--</span> 元
-      </p>
-    <div id="userAnswers" class="mt-4">
-      <h4>使用者回答：</h4>
-      <ul id="answersList" class="list-unstyled">
-        <!-- 回答內容會由JS動態生成 -->
-      </ul>
-    </div>
-      <button class="btn btn-primary option-btn" onclick="updateAnswers()">更新回答</button> <!-- 新增的按鈕 -->
   </div>
+</div>
 
     <div class="option-btn-group">
       <button class="btn btn-primary option-btn" onclick="restart()">重新開始</button>
