@@ -300,8 +300,6 @@
       <button class="btn btn-primary option-btn" onclick="restart()">重新開始</button>
     </div>
   </div>
-</div>
-
 </div><!-- container end -->
 
 <!-- 音樂播放控制區 -->
@@ -319,21 +317,17 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    initSteps();
-    showStep(1);
-    initMusicButton(); // 確保音樂按鈕也正確初始化
-    updateAnswers(); // 確保頁面加載時更新使用者的回答
-});
-document.addEventListener('DOMContentLoaded', () => {
-    bgMusic.play().catch(() => {
-        console.warn("Autoplay blocked. Waiting for user interaction...");
+  initSteps();
+  showStep(1);
+  initMusicButton(); // 確保音樂按鈕也正確初始化
+  updateAnswers(); // 確保頁面加載時更新使用者的回答
+  
+  document.addEventListener('click', () => {
+    const bgMusic = document.getElementById('bgMusic');
+    bgMusic.play().catch(error => {
+      console.error("Playback failed:", error);
     });
-
-    document.addEventListener('click', () => {
-        bgMusic.play().catch((error) => {
-            console.error("Playback failed:", error);
-        });
-    }, { once: true });
+  }, { once: true });
 });
 
 window.onload = () => {
@@ -895,21 +889,33 @@ function chooseInflation(yearGap, rate) {
   state.yearGap = yearGap;
   state.inflationRate = rate;
 
+  const currentCostElem = document.getElementById('currentCost');
+  const singleSalaryElem = document.getElementById('singleSalary');
+  const doubleSalaryElem = document.getElementById('doubleSalary');
+  const inflationWrapElem = document.getElementById('inflationWrap');
+  const futureCostElem = document.getElementById('futureCost');
+
+  // 確保所有元素都存在
+  if (!currentCostElem || !singleSalaryElem || !doubleSalaryElem || !inflationWrapElem || !futureCostElem) {
+    console.error('One or more elements are missing');
+    return;
+  }
+
   // 更新當前支出
   const totalCost = calcTotalCost();
   const singleSalary = Math.ceil(totalCost / 12);
   const doubleSalary = Math.ceil(singleSalary / 2);
-  document.getElementById('singleSalary').textContent = singleSalary.toLocaleString();
-  document.getElementById('doubleSalary').textContent = doubleSalary.toLocaleString();
-  document.getElementById('currentCost').textContent = totalCost.toLocaleString();
+  currentCostElem.textContent = totalCost.toLocaleString();
+  singleSalaryElem.textContent = singleSalary.toLocaleString();
+  doubleSalaryElem.textContent = doubleSalary.toLocaleString();
 
   // 更新未來支出（如果適用）
   if (yearGap !== 'unknown' && rate !== 'unknown') {
     const futureCost = calcFutureCost(totalCost);
-    document.getElementById('inflationWrap').style.display = 'block';
-    document.getElementById('futureCost').textContent = futureCost.toLocaleString();
+    inflationWrapElem.style.display = 'block';
+    futureCostElem.textContent = futureCost.toLocaleString();
   } else {
-    document.getElementById('inflationWrap').style.display = 'none';
+    inflationWrapElem.style.display = 'none';
   }
 
   // 顯示結果區域
@@ -917,8 +923,13 @@ function chooseInflation(yearGap, rate) {
 }
 
 function showResultArea() {
-  document.getElementById('resultArea').style.display = 'block';
-  updateAnswers(); // 更新使用者的回答
+  const resultArea = document.getElementById('resultArea');
+  if (resultArea) {
+    resultArea.style.display = 'block';
+    updateAnswers(); // 更新使用者的回答
+  } else {
+    console.error('Result area element is missing');
+  }
 }
 
 window.showFuture = function() {
