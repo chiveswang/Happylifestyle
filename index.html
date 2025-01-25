@@ -446,16 +446,25 @@ function nextStep(){
 }
 
 function restart() {
+    // 重置 state 變量
     Object.assign(state, {
         children: 0, houseType: '', rent: 0, buy: 0, car: 0,
         dateTimes: 0, dateLevel: 1, honeymoon: 0, pet: 0,
         parents: 0, wedding: 0, weekend: 0, hobby: 0, backup: 0,
         yearGap: '0', inflationRate: '0'
     });
+
+    // 隱藏結果區域
+    const resultArea = document.getElementById('resultArea');
+    if (resultArea) {
+        resultArea.style.display = 'none';
+    }
+
+    // 初始化步驟並顯示第一步
     initSteps();
     currentStep = 1;
     showStep(1);
-    updateAnswers(); // 確保每次重新開始時更新使用者的回答
+    updateAnswers(); // 更新使用者的回答
 }
 
 
