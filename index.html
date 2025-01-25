@@ -282,13 +282,25 @@
     <button class="btn btn-primary option-btn" onclick="chooseInflation('10','3.50')">十年後，快速攀升</button>
     <button class="btn btn-primary option-btn" onclick="chooseInflation('unknown','unknown')">不知道欸</button>
   </div>
-</div>
-
+  </div>
+<div id="resultArea" style="display:none;">
+  <h3>結果出爐</h3>
+  <p>理想生活每年支出：<span id="currentCost" class="highlight">--</span> 元</p>
+  <p>換算單人月薪需達：<span id="singleSalary" class="highlight">--</span> 元</p>
+  <p>換算雙人月薪需達：<span id="doubleSalary" class="highlight">--</span> 元</p>
+  <p id="inflationWrap" style="display:none;">
+    考慮通膨十年後年支出：<span id="futureCost" class="highlight">--</span> 元
+  </p>
+  <div id="userAnswers" class="mt-4">
+    <h4>使用者回答：</h4>
+    <ul id="answersList" class="list-unstyled">
+      <!-- 回答內容會由JS動態生成 -->
+    </ul>
     <div class="option-btn-group">
       <button class="btn btn-primary option-btn" onclick="restart()">重新開始</button>
     </div>
   </div>
-
+</div>
 
 </div><!-- container end -->
 
@@ -900,9 +912,13 @@ function chooseInflation(yearGap, rate) {
     document.getElementById('inflationWrap').style.display = 'none';
   }
 
-  // 保存結果並跳轉到新的頁面
-  saveResults();
-  window.location.href = 'result.html'; // 假設新的頁面是 result.html
+  // 顯示結果區域
+  showResultArea();
+}
+
+function showResultArea() {
+  document.getElementById('resultArea').style.display = 'block';
+  updateAnswers(); // 更新使用者的回答
 }
 
 window.showFuture = function() {
