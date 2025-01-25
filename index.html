@@ -304,30 +304,6 @@
   </div>
 
 
-  <!-- STEP 14：結果 (最後一頁) -->
-  <div id="resultSection" class="question-step">
-    <h3 class="text-center">問題都回答完啦！</h3>
-    <p class="text-center">點擊下方按鈕，顯示所有項目金額與未來支出</p>
-    <div class="text-center mb-3">
-      <button class="btn btn-success" onclick="showFuture()">顯示未來</button>
-    </div>
-
-    <!-- 結果區塊（點擊顯示未來後才填入） -->
-    <div id="finalResult" style="display:none;">
-      <h4>試算結果</h4>
-      <ul id="lineItems"></ul>
-      <hr>
-      <p>合計：<span id="currentCostText" class="result-highlight">--</span> 元 / 年</p>
-      <p id="inflationHint" style="display:none;">
-        若再過 <span id="yearGapText"></span>，可能需要
-        <span id="futureCostText" class="result-highlight">--</span> 元 / 年
-      </p>
-    </div>
-
-    <div class="text-center mt-3">
-    <button class="btn btn-primary option-btn" onclick="restart()">重新開始</button>
-    </div>
-  </div>
 </div><!-- container end -->
 
 <!-- 音樂播放控制區 -->
@@ -347,6 +323,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     initSteps();
     showStep(1);
+    initMusicButton(); // 確保音樂按鈕也正確初始化
+    updateAnswers(); // 確保頁面加載時更新使用者的回答
 });
 document.addEventListener('DOMContentLoaded', () => {
     bgMusic.play().catch(() => {
@@ -475,16 +453,17 @@ function nextStep(){
   showStep(currentStep);
 }
 
-function restart(){
-  Object.assign(state, {
-    children:0, houseType:'', rent:0, buy:0, car:0,
-    dateTimes:0, dateLevel:1, honeymoon:0, pet:0,
-    parents:0, wedding:0, weekend:0, hobby:0, backup:0,
-    yearGap:'0', inflationRate:'0'
-  });
-  initSteps();
-  currentStep=1;
-  showStep(1);
+function restart() {
+    Object.assign(state, {
+        children: 0, houseType: '', rent: 0, buy: 0, car: 0,
+        dateTimes: 0, dateLevel: 1, honeymoon: 0, pet: 0,
+        parents: 0, wedding: 0, weekend: 0, hobby: 0, backup: 0,
+        yearGap: '0', inflationRate: '0'
+    });
+    initSteps();
+    currentStep = 1;
+    showStep(1);
+    updateAnswers(); // 確保每次重新開始時更新使用者的回答
 }
 
 
@@ -518,7 +497,6 @@ function chooseDateTimes(val){
 }
 
 /* ============ 計算邏輯 & 顯示 ============ */
-/**顯示使用者答案 **/
 function updateAnswers() {
   const answersList = document.getElementById('answersList');
   
@@ -541,7 +519,139 @@ function updateAnswers() {
         unknown: "不知道"
       }
     },
-    // Add mappings for other questions here
+    rent: {
+      question: "租房細項",
+      options: {
+        8000: "分租溫馨雅房",
+        16000: "浪漫雙人套房",
+        32000: "幸福家庭全戶",
+        unknown: "不知道"
+      }
+    },
+    buy: {
+      question: "買房細項",
+      options: {
+        60000: "交通方便蛋黃區",
+        45000: "鬧中取靜蛋白區",
+        30000: "清靜幽雅蛋殼區",
+        unknown: "不知道"
+      }
+    },
+    car: {
+      question: "愛車交通",
+      options: {
+        0: "一起牽手散步就好",
+        80000: "浪漫的機車載妳風來雨去",
+        120000: "一台浪漫小車",
+        240000: "兩台帥氣跑車",
+        unknown: "不知道"
+      }
+    },
+    dateTimes: {
+      question: "每月要過幾次紀念日",
+      options: {
+        3000: "1 次",
+        6000: "2 次",
+        9000: "3 次",
+        unknown: "不知道"
+      }
+    },
+    dateLevel: {
+      question: "紀念日慶祝方式",
+      options: {
+        0.3: "有你就好",
+        0.5: "簡單溫馨",
+        1: "盛重疼愛",
+        2: "極致浪漫",
+        unknown: "不知道"
+      }
+    },
+    honeymoon: {
+      question: "蜜月旅行",
+      options: {
+        30000: "國內旅遊",
+        50000: "日韓東南亞",
+        150000: "歐美文化之旅",
+        300000: "想看看世界的邊界",
+        unknown: "不知道"
+      }
+    },
+    pet: {
+      question: "寵物夥伴",
+      options: {
+        0: "不養寵物，專注於彼此",
+        2000: "一隻貓貓",
+        3000: "一隻狗狗",
+        5000: "多隻毛孩的熱鬧家庭",
+        unknown: "不知道"
+      }
+    },
+    parents: {
+      question: "父母關懷",
+      options: {
+        0: "逢年過節回家就好",
+        3000: "每月暖心補貼",
+        6000: "給爸媽多點關懷",
+        10000: "想好好孝順雙方父母",
+        unknown: "不知道"
+      }
+    },
+    wedding: {
+      question: "婚禮 / 週年慶典",
+      options: {
+        80000: "簡單溫馨，親友小聚",
+        200000: "華麗浪漫，宴請賓客",
+        400000: "夢幻海外婚禮",
+        unknown: "不知道"
+      }
+    },
+    weekend: {
+      question: "週末小旅行",
+      options: {
+        0: "在家慵懶，煮咖啡看電影",
+        2000: "偶爾近郊一日遊",
+        8000: "幾乎每週都要小旅行",
+        20000: "高質感生活，每次住精品民宿",
+        unknown: "不知道"
+      }
+    },
+    hobby: {
+      question: "夢想 / 興趣嗜好",
+      options: {
+        1000: "一起運動、保持健康",
+        3000: "一起學琴、學畫，陶冶性情",
+        8000: "極限挑戰，裝備與教練",
+        15000: "環遊世界清單，努力追夢",
+        unknown: "不知道"
+      }
+    },
+    backup: {
+      question: "備用金 / 驚喜基金",
+      options: {
+        1000: "一點點就好，應付小突發",
+        3000: "稍微多一點，好安心過日子",
+        8000: "想常常給妳浪漫驚喜",
+        unknown: "不知道"
+      }
+    },
+    yearGap: {
+      question: "通膨條件 (年數)",
+      options: {
+        "10": "十年後",
+        "20": "二十年後",
+        "30": "三十年後",
+        unknown: "不知道"
+      }
+    },
+    inflationRate: {
+      question: "通膨條件 (年增率)",
+      options: {
+        "2.50": "緩慢成長",
+        "3.00": "中等成長",
+        "3.50": "快速攀升",
+        unknown: "不知道"
+      }
+    }
   };
 
   answersList.innerHTML = Object.entries(state)
