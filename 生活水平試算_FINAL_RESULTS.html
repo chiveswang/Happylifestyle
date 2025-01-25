@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>浪漫生活問答：我們的愛需要多少年收入？</title>
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Microsoft JhengHei", sans-serif;
+      background: linear-gradient(to bottom right, #ffe4ea, #ffffff 80%);
+      color: #4e4e4e;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 100px; /* 音樂按鈕空間 */
+    }
+    .container {
+      max-width: 100%;
+      width: 90%;
+      margin: 30px auto;
+      background-color: #fff8fa;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    h1, h2, h3 {
+      color: #bf4060;
+      font-weight: bold;
+      text-align: center;
+    }
+    p {
+      line-height: 1.8;
+      text-align: center;
+    }
+    .question-step {
+      display: none;
+    }
+    .question-step.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .option-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .option-btn {
+      flex: 1 1 calc(50% - 20px);
+      min-width: 140px;
+      padding: 10px;
+      border-radius: 25px;
+    }
+    @media (min-width: 768px) {
+      .option-btn {
+        flex: 1 1 calc(25% - 20px);
+      }
+    }
+    .result-highlight {
+      color: #c23;
+      font-weight: bold;
+    }
+    #musicBtn {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 999;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    #musicBtn:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="text-center mb-4">浪漫生活問答</h1>
+  <p class="text-center">
+    讓我們一起想像未來的甜蜜生活，看看每年需要多少收入來實現這些夢想吧！
+  </p>
+
+  <!-- STEP 1：孩子數量 -->
+  <div id="step1" class="question-step active">
+    <h3>問題 1：可愛的小天使</h3>
+    <p>寶貝，我們結婚後，會迎接幾個小天使呢？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('children',0)">只想兩人世界</button>
+      <button class="btn btn-primary option-btn" onclick="choose('children',1)">一個小天使就好</button>
+      <button class="btn btn-primary option-btn" onclick="choose('children',2)">兩個絕世萌寶</button>
+      <button class="btn btn-primary option-btn" onclick="choose('children',3)">熱鬧的幸福家庭</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('children','unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 2：租房 or 買房 -->
+  <div id="step2" class="question-step">
+    <h3>問題 2：愛之窩</h3>
+    <p>親愛的，妳想要我們住在怎樣的地方？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="chooseHouse('rent')">
+        和你一起輕鬆租下小木屋
+      </button>
+      <button class="btn btn-primary option-btn" onclick="chooseHouse('buy')">
+        築起屬於我們的夢幻城堡
+      </button>
+      <button class="btn btn-secondary option-btn" onclick="chooseHouse('unknown')">不知道欸</button>
+    </div>
+  </div>
+  <!-- STEP 2-1：租房細項 -->
+  <div id="step2_rent" class="question-step">
+    <h3>愛之窩 - 租房</h3>
+    <p>妳想租下哪種浪漫居所？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('rent',8000)">分租溫馨雅房</button>
+      <button class="btn btn-primary option-btn" onclick="choose('rent',16000)">浪漫雙人套房</button>
+      <button class="btn btn-primary option-btn" onclick="choose('rent',32000)">幸福家庭全戶</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('rent','unknown')">不知道欸</button>
+    </div>
+  </div>
+  <!-- STEP 2-2：買房細項 -->
+  <div id="step2_buy" class="question-step">
+    <h3>愛之窩 - 買房</h3>
+    <p>妳想在哪裡築夢？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('buy',60000)">交通方便蛋黃區</button>
+      <button class="btn btn-primary option-btn" onclick="choose('buy',45000)">鬧中取靜蛋白區</button>
+      <button class="btn btn-primary option-btn" onclick="choose('buy',30000)">清靜幽雅蛋殼區</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('buy','unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 3：愛車交通 (包含機車) -->
+  <div id="step3" class="question-step">
+    <h3>問題 3：愛車交通</h3>
+    <p>想和妳一起去看星空，我們要準備什麼交通工具？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('car',0)">一起牽手散步就好</button>
+      <button class="btn btn-primary option-btn" onclick="choose('car',80000)">浪漫的機車載妳風來雨去</button>
+      <button class="btn btn-primary option-btn" onclick="choose('car',120000)">一台浪漫小車</button>
+      <button class="btn btn-primary option-btn" onclick="choose('car',240000)">兩台帥氣跑車</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('car','unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 4：每月要過幾次紀念日 -->
+  <div id="step4" class="question-step">
+    <h3>問題 4：紀念日次數</h3>
+    <p>我想每個月都和妳慶祝相愛的日子，可以嗎？我們要過幾次？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="chooseDateTimes(3000)">1 次</button>
+      <button class="btn btn-primary option-btn" onclick="chooseDateTimes(6000)">2 次</button>
+      <button class="btn btn-primary option-btn" onclick="chooseDateTimes(9000)">3 次</button>
+      <button class="btn btn-secondary option-btn" onclick="chooseDateTimes('unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 5：要怎麼慶祝 -->
+  <div id="step5" class="question-step">
+    <h3>問題 5：紀念日慶祝方式</h3>
+    <p>親愛的，那要怎麼慶祝才符合妳心中的浪漫呢？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('dateLevel',0.3)">有你就好</button>
+      <button class="btn btn-primary option-btn" onclick="choose('dateLevel',0.5)">簡單溫馨</button>
+      <button class="btn btn-primary option-btn" onclick="choose('dateLevel',1)">盛重疼愛</button>
+      <button class="btn btn-primary option-btn" onclick="choose('dateLevel',2)">極致浪漫</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('dateLevel','unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 6：蜜月旅行 -->
+  <div id="step6" class="question-step">
+    <h3>問題 6：蜜月旅行</h3>
+    <p>妳想要什麼樣的浪漫之旅？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('honeymoon',30000)">國內旅遊</button>
+      <button class="btn btn-primary option-btn" onclick="choose('honeymoon',50000)">日韓東南亞</button>
+      <button class="btn btn-primary option-btn" onclick="choose('honeymoon',150000)">歐美文化之旅</button>
+      <button class="btn btn-primary option-btn" onclick="choose('honeymoon',300000)">想看看世界的邊界</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('honeymoon','unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 7：寵物夥伴 -->
+  <div id="step7" class="question-step">
+    <h3>問題 7：寵物夥伴</h3>
+    <p>寶貝，我想在家裡多一位毛茸茸的小夥伴，妳願意嗎？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('pet',0)">不養寵物，專注於彼此</button>
+      <button class="btn btn-primary option-btn" onclick="choose('pet',2000)">一隻貓貓</button>
+      <button class="btn btn-primary option-btn" onclick="choose('pet',3000)">一隻狗狗</button>
+      <button class="btn btn-primary option-btn" onclick="choose('pet',5000)">多隻毛孩的熱鬧家庭</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('pet','unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 8：父母互動 -->
+  <div id="step8" class="question-step">
+    <h3>問題 8：父母關懷</h3>
+    <p>親愛的，我想讓爸媽也感受到我們的愛，每月該準備多少心意呢？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('parents',0)">逢年過節回家就好</button>
+      <button class="btn btn-primary option-btn" onclick="choose('parents',3000)">每月暖心補貼</button>
+      <button class="btn btn-primary option-btn" onclick="choose('parents',6000)">給爸媽多點關懷</button>
+      <button class="btn btn-primary option-btn" onclick="choose('parents',10000)">想好好孝順雙方父母</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('parents','unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 9：婚禮或週年盛典 -->
+  <div id="step9" class="question-step">
+    <h3>問題 9：婚禮 / 週年慶典</h3>
+    <p>我們的婚禮或每年紀念日的盛典，妳期待什麼規模？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('wedding',80000)">簡單溫馨，親友小聚</button>
+      <button class="btn btn-primary option-btn" onclick="choose('wedding',200000)">華麗浪漫，宴請賓客</button>
+      <button class="btn btn-primary option-btn" onclick="choose('wedding',400000)">夢幻海外婚禮</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('wedding','unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 10：週末小旅行 -->
+  <div id="step10" class="question-step">
+    <h3>問題 10：週末小旅行</h3>
+    <p>寶貝，每到週末，我想帶妳去感受不一樣的風景，我們該怎麼規劃？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('weekend',0)">在家慵懶，煮咖啡看電影</button>
+      <button class="btn btn-primary option-btn" onclick="choose('weekend',2000)">偶爾近郊一日遊</button>
+      <button class="btn btn-primary option-btn" onclick="choose('weekend',8000)">幾乎每週都要小旅行</button>
+      <button class="btn btn-primary option-btn" onclick="choose('weekend',20000)">高質感生活，每次住精品民宿</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('weekend','unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 11：興趣嗜好 -->
+  <div id="step11" class="question-step">
+    <h3>問題 11：夢想 / 興趣嗜好</h3>
+    <p>甜心，還有什麼嗜好或夢想，我可以陪你一起完成？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('hobby',1000)">一起運動、保持健康</button>
+      <button class="btn btn-primary option-btn" onclick="choose('hobby',3000)">一起學琴、學畫，陶冶性情</button>
+      <button class="btn btn-primary option-btn" onclick="choose('hobby',8000)">極限挑戰，裝備與教練</button>
+      <button class="btn btn-primary option-btn" onclick="choose('hobby',15000)">環遊世界清單，努力追夢</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('hobby','unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 12：備用金 -->
+  <div id="step12" class="question-step">
+    <h3>問題 12：備用金 / 驚喜基金</h3>
+    <p>生活有時需要一點小金庫，妳覺得要預備多少呢？</p>
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn" onclick="choose('backup',1000)">一點點就好，應付小突發</button>
+      <button class="btn btn-primary option-btn" onclick="choose('backup',3000)">稍微多一點，好安心過日子</button>
+      <button class="btn btn-primary option-btn" onclick="choose('backup',8000)">想常常給妳浪漫驚喜</button>
+      <button class="btn btn-secondary option-btn" onclick="choose('backup','unknown')">不知道欸</button>
+    </div>
+  </div>
+
+  <!-- STEP 13：通膨 (距退休 & 年增率) -->
+  <div id="step13" class="question-step">
+    <h2>Step 13: 通膨(最後一題)</h2>
+    <p>請選擇通膨條件，一旦選擇後就直接顯示最終結果</p>
+    <div class="option-btn-group">
+    <button class="btn btn-primary option-btn" onclick="chooseInflation('10','2.50')">十年後，緩慢成長</button>
+    <button class="btn btn-primary option-btn" onclick="chooseInflation('10','3.00')">十年後，中等成長</button>
+    <button class="btn btn-primary option-btn" onclick="chooseInflation('10','3.50')">十年後，快速攀升</button>
+    <button class="btn btn-primary option-btn" onclick="chooseInflation('unknown','unknown')">不知道欸</button>
+    </div>
+    <div id="resultArea">
+      <h3>結果出爐</h3>
+      <p>理想生活每年支出：<span id="currentCost" class="highlight">--</span> 元</p>
+      <p>換算單人月薪需達：<span id="singleSalary" class="highlight">--</span> 元</p>
+      <p>換算雙人月薪需達：<span id="doubleSalary" class="highlight">--</span> 元</p>
+      <p id="inflationWrap" style="display:none;">
+        考慮通膨十年後年支出：<span id="futureCost" class="highlight">--</span> 元
+      </p>
+    <div id="userAnswers" class="mt-4">
+      <h4>使用者回答：</h4>
+      <ul id="answersList" class="list-unstyled">
+        <!-- 回答內容會由JS動態生成 -->
+      </ul>
+    </div>
+  </div>
+
+    <div class="option-btn-group">
+      <button class="btn btn-primary option-btn onclick="restart()">重新開始</button>
+    </div>
+  </div>
+
+
+  <!-- STEP 14：結果 (最後一頁) -->
+  <div id="resultSection" class="question-step">
+    <h3 class="text-center">問題都回答完啦！</h3>
+    <p class="text-center">點擊下方按鈕，顯示所有項目金額與未來支出</p>
+    <div class="text-center mb-3">
+      <button class="btn btn-success" onclick="showFuture()">顯示未來</button>
+    </div>
+
+    <!-- 結果區塊（點擊顯示未來後才填入） -->
+    <div id="finalResult" style="display:none;">
+      <h4>試算結果</h4>
+      <ul id="lineItems"></ul>
+      <hr>
+      <p>合計：<span id="currentCostText" class="result-highlight">--</span> 元 / 年</p>
+      <p id="inflationHint" style="display:none;">
+        若再過 <span id="yearGapText"></span>，可能需要
+        <span id="futureCostText" class="result-highlight">--</span> 元 / 年
+      </p>
+    </div>
+
+    <div class="text-center mt-3">
+    <button class="btn btn-primary option-btn" onclick="restart()">重新開始</button>
+    </div>
+  </div>
+</div><!-- container end -->
+
+<!-- 音樂播放控制區 -->
+<div id="musicControl" style="position: fixed; right: 20px; bottom: 20px; z-index: 999; display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.8); padding: 10px; border-radius: 25px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">
+  <button id="musicBtn" class="btn btn-danger" style="border-radius: 50%; width: 50px; height: 50px; font-size: 20px;">♪</button>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <input id="volumeControl" type="range" min="0" max="1" step="0.1" value="0.2" style="width: 120px; height: 8px; -webkit-appearance: none; appearance: none; background: linear-gradient(to right, #ff4d4f, #ff7875); border-radius: 10px; cursor: pointer;">
+    <span id="volumeValue" style="margin-top: 5px; font-size: 14px; color: #555;">20%</span>
+  </div>
+</div>
+<audio id="bgMusic" loop autoplay>
+  <source src="love_song.mp3" type="audio/mpeg">
+  您的瀏覽器不支援音訊播放
+</audio>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    initSteps();
+    showStep(1);
+});
+document.addEventListener('DOMContentLoaded', () => {
+    bgMusic.play().catch(() => {
+        console.warn("Autoplay blocked. Waiting for user interaction...");
+    });
+
+    document.addEventListener('click', () => {
+        bgMusic.play().catch((error) => {
+            console.error("Playback failed:", error);
+        });
+    }, { once: true });
+});
+
+window.onload = () => {
+  try {
+    bgMusic.play();
+  } catch (e) {
+    console.warn("Autoplay was blocked by the browser.");
+  }
+};
+
+  const musicBtn = document.getElementById('musicBtn');
+  const bgMusic = document.getElementById('bgMusic');
+  const volumeControl = document.getElementById('volumeControl');
+  const volumeValue = document.getElementById('volumeValue');
+
+  let isPlaying = true;
+
+  // 播放/暫停音樂
+  musicBtn.addEventListener('click', () => {
+    if (!isPlaying) {
+      bgMusic.play();
+      musicBtn.textContent = '♫';
+      isPlaying = true;
+    } else {
+      bgMusic.pause();
+      musicBtn.textContent = '♪';
+      isPlaying = false;
+    }
+  });
+
+  // 控制音量
+  volumeControl.addEventListener('input', (event) => {
+    const volume = event.target.value;
+    bgMusic.volume = volume;
+    volumeValue.textContent = `${Math.round(volume * 100)}%`; // 顯示當前音量百分比
+  });
+
+  // 初始化音量
+  bgMusic.volume = 0.2; // 預設音量
+  volumeValue.textContent = '20%'; // 初始化音量百分比顯示
+</script>
+
+
+<script>
+/* ============ 全局狀態 ============ */
+const state = {
+  children: 0,
+  houseType: '',
+  rent: 0,
+  buy: 0,
+  car: 0,
+  dateTimes: 0, 
+  dateLevel: 1, 
+  honeymoon: 0,
+  pet: 0,
+  parents: 0,
+  wedding: 0,
+  weekend: 0,
+  hobby: 0,
+  backup: 0,
+  yearGap: '0',
+  inflationRate: '0'
+};
+
+let currentStep = 1;
+const totalSteps = 14; // 最終結果 step14
+
+/* ============ 初始化 & 流程管理 ============ */
+function initSteps(){
+  for(let i=2; i<=14; i++){
+    const st = document.getElementById('step'+i);
+    if(st) st.classList.remove('active');
+  }
+  document.getElementById('step2_rent')?.classList.remove('active');
+  document.getElementById('step2_buy')?.classList.remove('active');
+  document.getElementById('resultSection')?.classList.remove('active');
+}
+
+function showStep(num){
+  // 隱藏所有 step
+  document.querySelectorAll('.question-step').forEach(s => s.classList.remove('active'));
+
+  // 特殊邏輯：step2 + houseType
+  if(num===2 && state.houseType==='rent'){
+    document.getElementById('step2_rent').classList.add('active');
+    currentStep=2;
+    return;
+  }
+  if(num===2 && state.houseType==='buy'){
+    document.getElementById('step2_buy').classList.add('active');
+    currentStep=2;
+    return;
+  }
+  if(num===2 && state.houseType==='unknown'){
+    // 直接跳 step3
+    currentStep=3;
+    showStep(3);
+    return;
+  }
+  // 一般情況
+  const target = document.getElementById('step'+num);
+  if(target){
+    target.classList.add('active');
+    currentStep=num;
+  }else{
+    // 若 step 不存在,嘗試下一個
+    if(num<=totalSteps){
+      showStep(num+1);
+    }
+  }
+}
+
+function nextStep(){
+  currentStep++;
+  showStep(currentStep);
+}
+
+function restart(){
+  Object.assign(state, {
+    children:0, houseType:'', rent:0, buy:0, car:0,
+    dateTimes:0, dateLevel:1, honeymoon:0, pet:0,
+    parents:0, wedding:0, weekend:0, hobby:0, backup:0,
+    yearGap:'0', inflationRate:'0'
+  });
+  initSteps();
+  currentStep=1;
+  showStep(1);
+}
+
+
+/* ============ 按鈕事件: choose / chooseHouse / ... ============ */
+function choose(key, val){
+  if(val==='unknown'){
+    state[key] = (key==='dateLevel')?1:0;
+  } else {
+    state[key] = val;
+  }
+  nextStep();
+}
+
+function chooseHouse(choice){
+  if(choice==='unknown'){
+    state.houseType='unknown';
+  } else {
+    state.houseType=choice; // rent / buy
+  }
+  nextStep();
+}
+
+// 紀念日次數
+function chooseDateTimes(val){
+  if(val==='unknown'){
+    state.dateTimes=0;
+  } else {
+    state.dateTimes=parseInt(val);
+  }
+  nextStep();
+}
+
+/* ============ 計算邏輯 & 顯示 ============ */
+/**顯示使用者答案 **/
+function updateAnswers() {
+  const answersList = document.getElementById('answersList');
+  
+  const questionMapping = {
+    children: {
+      question: "孩子數量",
+      options: {
+        0: "只想兩人世界",
+        1: "一個小天使就好",
+        2: "兩個絕世萌寶",
+        3: "熱鬧的幸福家庭",
+        unknown: "不知道"
+      }
+    },
+    houseType: {
+      question: "愛之窩",
+      options: {
+        rent: "輕鬆租下小木屋",
+        buy: "築起屬於我們的夢幻城堡",
+        unknown: "不知道"
+      }
+    },
+    // Add mappings for other questions here
+  };
+
+  answersList.innerHTML = Object.entries(state)
+    .filter(([key, value]) => questionMapping[key])
+    .map(([key, value]) => {
+      const question = questionMapping[key].question;
+      const answer = questionMapping[key].options[value] || "未選擇";
+      return `<li><strong>${question}:</strong> ${answer}</li>`;
+    })
+    .join('');
+}
+
+/** 最後一頁的按鈕: 顯示未來 **/
+function showFuture(){
+  // 1) 計算
+  const totalCost = calcTotalCost();
+  const futureCost = calcFutureCost(totalCost);
+
+  // 2) 顯示每個項目的金額
+  const lineItemsUL = document.getElementById('lineItems');
+  lineItemsUL.innerHTML = buildLineItemsHTML();
+
+  // 3) 顯示合計
+  document.getElementById('currentCostText').textContent = totalCost.toLocaleString();
+
+  // 4) 通膨
+  if(state.yearGap==='0' || state.inflationRate==='0'){
+    document.getElementById('inflationHint').style.display='none';
+  } else {
+    document.getElementById('inflationHint').style.display='block';
+    let yGapText='未來';
+    if(state.yearGap==='10') yGapText='十年後';
+    else if(state.yearGap==='20') yGapText='二十年後';
+    else if(state.yearGap==='30') yGapText='三十年後';
+    document.getElementById('yearGapText').textContent = yGapText;
+    document.getElementById('futureCostText').textContent = futureCost.toLocaleString();
+  }
+
+  // 5) 顯示區塊
+  document.getElementById('finalResult').style.display='block';
+}
+
+function calcTotalCost(){
+  let total=0;
+  // 1) kids => each=15萬
+  const kids = (state.children==='unknown')?0:state.children;
+  total += kids*150000;
+
+  // 2) house => rent or buy
+  let houseMonthly=0;
+  if(state.houseType==='rent') houseMonthly = state.rent;
+  else if(state.houseType==='buy')  houseMonthly = state.buy;
+  total += houseMonthly*12;
+
+  // 3) car => 0,80000,120000,240000
+  total += (state.car||0);
+
+  // 4) date => (dateTimes × dateLevel) per月 => ×12
+  const dateMonth = (state.dateTimes||0)*(state.dateLevel||1);
+  total += dateMonth*12;
+
+  // 5) honeymoon => 一次
+  total += (state.honeymoon||0);
+
+  // 6) pet => per月 => ×12
+  total += ((state.pet||0)*12);
+
+  // 7) parents => per月 => ×12
+  total += ((state.parents||0)*12);
+
+  // 8) wedding => 一次
+  total += (state.wedding||0);
+
+  // 9) weekend => per月 => ×12
+  total += ((state.weekend||0)*12);
+
+  // 10) hobby => per月 => ×12
+  total += ((state.hobby||0)*12);
+
+  // 11) backup => per月 => ×12
+  total += ((state.backup||0)*12);
+
+  // 12) base life => 20萬
+  total += 200000;
+
+  return total;
+}
+
+function calcFutureCost(baseCost){
+  const factor = getInflationFactor(state.yearGap, state.inflationRate);
+  return Math.round(baseCost*factor);
+}
+
+/* 產生每個項目的文字&金額 */
+function buildLineItemsHTML(){
+  const lines = [];
+
+  // 孩子
+  const kids = (state.children==='unknown')?0:state.children;
+  if(kids>0) {
+    lines.push(`小天使：${kids} 位，每年 ${(kids*150000).toLocaleString()} 元`);
+  } else {
+    lines.push(`小天使：無 or 未知 (0)`);
+  }
+
+  // house
+  if(state.houseType==='rent') {
+    lines.push(`租房：月 ${(state.rent||0).toLocaleString()} 元 -> 年 ${(state.rent*12).toLocaleString()} 元`);
+  } else if(state.houseType==='buy') {
+    lines.push(`買房：月 ${(state.buy||0).toLocaleString()} 元 -> 年 ${(state.buy*12).toLocaleString()} 元`);
+  } else {
+    lines.push(`愛之窩：未知 (0)`);
+  }
+
+  // car
+  if(state.car>0) {
+    lines.push(`愛車交通：每年 ${state.car.toLocaleString()} 元`);
+  } else {
+    lines.push(`愛車交通：無 or 未知 (0)`);
+  }
+
+  // dateTimes + dateLevel
+  const dateMonth = (state.dateTimes||0)*(state.dateLevel||1);
+  if(dateMonth>0){
+    lines.push(`紀念日：月 ${dateMonth.toLocaleString()} 元 -> 年 ${(dateMonth*12).toLocaleString()} 元`);
+  } else {
+    lines.push(`紀念日：無 or 未知 (0)`);
+  }
+
+  // honeymoon
+  if(state.honeymoon>0){
+    lines.push(`蜜月旅行：一次 ${(state.honeymoon||0).toLocaleString()} 元`);
+  } else {
+    lines.push(`蜜月旅行：無 or 未知 (0)`);
+  }
+
+  // pet
+  if(state.pet>0){
+    lines.push(`寵物：月 ${(state.pet||0).toLocaleString()} 元 -> 年 ${(state.pet*12).toLocaleString()} 元`);
+  } else {
+    lines.push(`寵物：無 or 未知 (0)`);
+  }
+
+  // parents
+  if(state.parents>0){
+    lines.push(`父母關懷：月 ${(state.parents||0).toLocaleString()} 元 -> 年 ${(state.parents*12).toLocaleString()} 元`);
+  } else {
+    lines.push(`父母關懷：無 or 未知 (0)`);
+  }
+
+  // wedding
+  if(state.wedding>0){
+    lines.push(`婚禮/週年盛典：一次 ${(state.wedding||0).toLocaleString()} 元`);
+  } else {
+    lines.push(`婚禮/週年盛典：無 or 未知 (0)`);
+  }
+
+  // weekend
+  if(state.weekend>0){
+    lines.push(`週末小旅行：月 ${(state.weekend||0).toLocaleString()} 元 -> 年 ${(state.weekend*12).toLocaleString()} 元`);
+  } else {
+    lines.push(`週末小旅行：無 or 未知 (0)`);
+  }
+
+  // hobby
+  if(state.hobby>0){
+    lines.push(`夢想/嗜好：月 ${(state.hobby||0).toLocaleString()} 元 -> 年 ${(state.hobby*12).toLocaleString()} 元`);
+  } else {
+    lines.push(`夢想/嗜好：無 or 未知 (0)`);
+  }
+
+  // backup
+  if(state.backup>0){
+    lines.push(`備用金：月 ${(state.backup||0).toLocaleString()} 元 -> 年 ${(state.backup*12).toLocaleString()} 元`);
+  } else {
+    lines.push(`備用金：無 or 未知 (0)`);
+  }
+
+  // base life
+  lines.push(`夫妻基本生活：一年 200,000 元`);
+
+  // 組合HTML
+  return lines.map(li => `<li>${li}</li>`).join('');
+}
+
+/* 通膨因子對照 */
+const inflationData = {
+  "10": {"2.50":1.28, "3.00":1.34, "3.50":1.41},
+  "20": {"2.50":1.64, "3.00":1.81, "3.50":1.99},
+  "30": {"2.50":2.12, "3.00":2.44, "3.50":2.74}
+};
+function getInflationFactor(y,r){
+  if(y==='0' || r==='0') return 1.0;
+  if(inflationData[y] && inflationData[y][r]) return inflationData[y][r];
+  return 1.0;
+}
+
+/* ============ 音樂按鈕 ============ */
+function initMusicButton(){
+  const musicBtn = document.getElementById('musicBtn');
+  const bgMusic = document.getElementById('bgMusic');
+  let isPlaying=false;
+
+  musicBtn.addEventListener('click',()=>{
+    if(!isPlaying){
+      bgMusic.play();
+      musicBtn.textContent='♫';
+      isPlaying=true;
+    } else {
+      bgMusic.pause();
+      musicBtn.textContent='♪';
+      isPlaying=false;
+    }
+  });
+}
+
+/* ============ DOM Ready ============ */
+document.addEventListener('DOMContentLoaded', ()=>{
+  initSteps();
+  showStep(1);
+  initMusicButton();
+});
+</script>
+
+<script>
+// Ensure all critical functions are defined globally
+
+window.chooseInflation = function(yearGap, rate) {
+  state.yearGap = yearGap;
+  state.inflationRate = rate;
+
+  // Update current expenditure
+  const totalCost = calcTotalCost();
+  const singleSalary = Math.ceil(totalCost / 12);
+  const doubleSalary = Math.ceil(singleSalary / 2);
+  document.getElementById('singleSalary').textContent = singleSalary.toLocaleString();
+  document.getElementById('doubleSalary').textContent = doubleSalary.toLocaleString();
+  document.getElementById('currentCost').textContent = totalCost.toLocaleString();
+
+  // Update future expenditure if applicable
+  if (yearGap !== 'unknown' && rate !== 'unknown') {
+    const futureCost = calcFutureCost(totalCost);
+    document.getElementById('inflationWrap').style.display = 'block';
+    document.getElementById('futureCost').textContent = futureCost.toLocaleString();
+  } else {
+    document.getElementById('inflationWrap').style.display = 'none';
+  }
+
+  document.getElementById('resultArea').style.display = 'block'; // Show result area
+};
+
+window.showFuture = function() {
+  // Calculate total cost
+  const totalCost = calcTotalCost();
+  const futureCost = calcFutureCost(totalCost);
+
+  // Update result block
+  document.getElementById('lineItems').innerHTML = buildLineItemsHTML();
+  document.getElementById('currentCostText').textContent = totalCost.toLocaleString();
+
+  // Handle inflation data
+  if (state.yearGap !== '0' && state.inflationRate !== '0') {
+    document.getElementById('inflationHint').style.display = 'block';
+    const yearGapText = state.yearGap === '10' ? '十年後' :
+                        state.yearGap === '20' ? '二十年後' :
+                        '三十年後';
+    document.getElementById('yearGapText').textContent = yearGapText;
+    document.getElementById('futureCostText').textContent = futureCost.toLocaleString();
+  } else {
+    document.getElementById('inflationHint').style.display = 'none';
+  }
+
+  // Ensure all results are displayed
+  document.getElementById('finalResult').style.display = 'block';
+  document.getElementById('resultSection').classList.add('active');
+};
+</script>
+</body>
+
+</html>
