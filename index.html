@@ -415,36 +415,36 @@ function initSteps(){
   document.getElementById('resultSection')?.classList.remove('active');
 }
 
-function showStep(num){
+function showStep(num, subType) {
   // 隱藏所有 step
   document.querySelectorAll('.question-step').forEach(s => s.classList.remove('active'));
 
   // 特殊邏輯：step2 + houseType
-  if(num===2 && state.houseType==='rent'){
+  if (num === 2 && subType === 'rent') {
     document.getElementById('step2_rent').classList.add('active');
-    currentStep=2;
+    currentStep = 2;
     return;
   }
-  if(num===2 && state.houseType==='buy'){
+  if (num === 2 && subType === 'buy') {
     document.getElementById('step2_buy').classList.add('active');
-    currentStep=2;
+    currentStep = 2;
     return;
   }
-  if(num===2 && state.houseType==='unknown'){
+  if (num === 2 && state.houseType === 'unknown') {
     // 直接跳 step3
-    currentStep=3;
+    currentStep = 3;
     showStep(3);
     return;
   }
   // 一般情況
-  const target = document.getElementById('step'+num);
-  if(target){
+  const target = document.getElementById('step' + num);
+  if (target) {
     target.classList.add('active');
-    currentStep=num;
-  }else{
+    currentStep = num;
+  } else {
     // 若 step 不存在,嘗試下一個
-    if(num<=totalSteps){
-      showStep(num+1);
+    if (num <= totalSteps) {
+      showStep(num + 1);
     }
   }
 }
@@ -478,13 +478,19 @@ function choose(key, val){
   nextStep();
 }
 
-function chooseHouse(choice){
-  if(choice==='unknown'){
-    state.houseType='unknown';
+function chooseHouse(choice) {
+  if (choice === 'unknown') {
+    state.houseType = 'unknown';
+    nextStep(); // 跳轉到下一步
   } else {
-    state.houseType=choice; // rent / buy
+    state.houseType = choice; // 設置為 'rent' 或 'buy'
+    // 根據選擇顯示相應的細項步驟
+    if (choice === 'rent') {
+      showStep(2, 'rent');
+    } else if (choice === 'buy') {
+      showStep(2, 'buy');
+    }
   }
-  nextStep();
 }
 
 // 紀念日次數
