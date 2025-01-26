@@ -10,7 +10,7 @@
             text-align: center;
             padding: 20px;
         }
-        #result, #lotContent {
+        #result, #lotContent, #coinTossResult {
             margin-top: 20px;
         }
     </style>
@@ -19,6 +19,8 @@
     <h1>抽籤</h1>
     <button id="drawLotBtn">抽取籤</button>
     <div id="result"></div>
+    <button id="tossCoinsBtn" style="display:none;">擲茭</button>
+    <div id="coinTossResult"></div>
     <div id="lotContent"></div>
     <script src="script.js"></script>
 </body>
@@ -26,6 +28,7 @@
 
 <script>
 document.getElementById('drawLotBtn').addEventListener('click', drawLot);
+document.getElementById('tossCoinsBtn').addEventListener('click', tossCoins);
 
 const ganZhi = [
     "甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申", "癸酉",
@@ -36,27 +39,31 @@ const ganZhi = [
     "甲寅", "乙卯", "丙辰", "丁巳", "戊午", "己未", "庚申", "辛酉", "壬戌", "癸亥"
 ];
 
-function drawLot() {
-    const lotNumber = Math.floor(Math.random() * 60) + 1;
-    const lotGanZhi = ganZhi[lotNumber - 1];
-    document.getElementById('result').innerText = `您抽到的籤號是：${lotNumber} (${lotGanZhi})`;
+let currentLotNumber = 0;
 
-    const coinTossResult = tossCoins();
-    if (coinTossResult) {
-        document.getElementById('lotContent').innerText = `籤詩內容：這是籤號${lotNumber} (${lotGanZhi})的籤詩`;
-    } else {
-        document.getElementById('lotContent').innerHTML = `
-            <p>不是聖茭，再抽一次？</p>
-            <button onclick="drawLot()">再抽一次</button>
-        `;
-    }
+function drawLot() {
+    currentLotNumber = Math.floor(Math.random() * 60) + 1;
+    const lotGanZhi = ganZhi[currentLotNumber - 1];
+    document.getElementById('result').innerText = `您抽到的籤號是：${currentLotNumber} (${lotGanZhi})`;
+    document.getElementById('tossCoinsBtn').style.display = 'block';
+    document.getElementById('coinTossResult').innerText = '';
+    document.getElementById('lotContent').innerText = '';
 }
 
 function tossCoins() {
     const coin1 = Math.random() > 0.5 ? '正' : '反';
     const coin2 = Math.random() > 0.5 ? '正' : '反';
     const isShengJiao = (coin1 !== coin2);
-    return isShengJiao;
+    document.getElementById('coinTossResult').innerText = `擲茭結果：${coin1} 和 ${coin2}`;
+
+    if (isShengJiao) {
+        document.getElementById('lotContent').innerText = `籤詩內容：這是籤號${currentLotNumber} (${ganZhi[currentLotNumber - 1]})的籤詩`;
+    } else {
+        document.getElementById('lotContent').innerHTML = `
+            <p>不是聖茭，再抽一次？</p>
+            <button onclick="drawLot()">再抽一次</button>
+        `;
+    }
 }
 </script>
 </html>
