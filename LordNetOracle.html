@@ -1,17 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>抽籤網頁</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Noto Serif TC", serif; /* 使用Noto Serif TC字體 */
             text-align: center;
+            background-color: #F8F4E3; /* 淺米黃色背景 */
+            color: #5D4037; /* 深棕色文字 */
             padding: 20px;
+        }
+        h1 {
+            color: #BF360C; /* 橘紅色標題 */
+            text-shadow: 1px 1px 2px #000000; /* 黑色陰影 */
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #BF360C; /* 橘紅色按鈕 */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #D84315; /* 深橘紅色 */
         }
         #result, #lotContent, #coinTossResult {
             margin-top: 20px;
+            font-size: 18px;
         }
         #coinToss {
             display: none;
@@ -29,6 +52,16 @@
             50% { transform: rotateY(180deg); }
             100% { transform: rotateY(360deg); }
         }
+        @media (max-width: 600px) {
+            .coin {
+                width: 80px;
+                height: 80px;
+            }
+            button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -45,6 +78,7 @@
     <div id="lotContent"></div>
     <script src="script.js"></script>
 </body>
+
 
 
 
@@ -75,8 +109,8 @@ function drawLot() {
 
 function tossCoins() {
     document.getElementById('coinToss').style.display = 'block';
-    document.getElementById('coin1').style.backgroundImage = 'url("正面.png")';
-    document.getElementById('coin2').style.backgroundImage = 'url("反面.png")';
+    document.getElementById('coin1').classList.add('coin-flip');
+    document.getElementById('coin2').classList.add('coin-flip');
 
     setTimeout(() => {
         const coin1 = Math.random() > 0.5 ? '正' : '反';
