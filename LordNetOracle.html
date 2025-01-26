@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽籤網頁</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #result, #lotContent {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>抽籤</h1>
+    <button id="drawLotBtn">抽取籤</button>
+    <div id="result"></div>
+    <div id="lotContent"></div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+document.getElementById('drawLotBtn').addEventListener('click', drawLot);
+
+const ganZhi = [
+    "甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申", "癸酉",
+    "甲戌", "乙亥", "丙子", "丁丑", "戊寅", "己卯", "庚辰", "辛巳", "壬午", "癸未",
+    "甲申", "乙酉", "丙戌", "丁亥", "戊子", "己丑", "庚寅", "辛卯", "壬辰", "癸巳",
+    "甲午", "乙未", "丙申", "丁酉", "戊戌", "己亥", "庚子", "辛丑", "壬寅", "癸卯",
+    "甲辰", "乙巳", "丙午", "丁未", "戊申", "己酉", "庚戌", "辛亥", "壬子", "癸丑",
+    "甲寅", "乙卯", "丙辰", "丁巳", "戊午", "己未", "庚申", "辛酉", "壬戌", "癸亥"
+];
+
+function drawLot() {
+    const lotNumber = Math.floor(Math.random() * 60) + 1;
+    const lotGanZhi = ganZhi[lotNumber - 1];
+    document.getElementById('result').innerText = `您抽到的籤號是：${lotNumber} (${lotGanZhi})`;
+
+    const coinTossResult = tossCoins();
+    if (coinTossResult) {
+        document.getElementById('lotContent').innerText = `籤詩內容：這是籤號${lotNumber} (${lotGanZhi})的籤詩`;
+    } else {
+        document.getElementById('lotContent').innerHTML = `
+            <p>不是聖茭，再抽一次？</p>
+            <button onclick="drawLot()">再抽一次</button>
+        `;
+    }
+}
+
+function tossCoins() {
+    const coin1 = Math.random() > 0.5 ? '正' : '反';
+    const coin2 = Math.random() > 0.5 ? '正' : '反';
+    const isShengJiao = (coin1 !== coin2);
+    return isShengJiao;
+}
