@@ -11,6 +11,12 @@
             background-color: #F8F4E3; /* 淺米黃色背景 */
             color: #5D4037; /* 深棕色文字 */
             padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
         h1 {
             color: #BF360C; /* 橘紅色標題 */
@@ -71,77 +77,72 @@
     <div id="prompt" style="display:none;">請示網府千歲是否是這支簽</div>
     <button id="tossCoinsBtn" style="display:none;">擲茭</button>
     <div id="coinToss">
-        <div class="coin" id="coin1"></div>
-        <div class="coin" id="coin2"></div>
+        <div class="coin" id="coin1" style="background-image: url('正面.png');"></div>
+        <div class="coin" id="coin2" style="background-image: url('反面.png');"></div>
     </div>
     <div id="coinTossResult"></div>
     <div id="lotContent"></div>
-    <script src="script.js"></script>
-</body>
+    <script>
+        document.getElementById('drawLotBtn').addEventListener('click', drawLot);
+        document.getElementById('tossCoinsBtn').addEventListener('click', tossCoins);
 
+        const ganZhi = [
+            "甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申", "癸酉",
+            "甲戌", "乙亥", "丙子", "丁丑", "戊寅", "己卯", "庚辰", "辛巳", "壬午", "癸未",
+            "甲申", "乙酉", "丙戌", "丁亥", "戊子", "己丑", "庚寅", "辛卯", "壬辰", "癸巳",
+            "甲午", "乙未", "丙申", "丁酉", "戊戌", "己亥", "庚子", "辛丑", "壬寅", "癸卯",
+            "甲辰", "乙巳", "丙午", "丁未", "戊申", "己酉", "庚戌", "辛亥", "壬子", "癸丑",
+            "甲寅", "乙卯", "丙辰", "丁巳", "戊午", "己未", "庚申", "辛酉", "壬戌", "癸亥"
+        ];
 
+        let currentLotNumber = 0;
 
-
-<script>
-document.getElementById('drawLotBtn').addEventListener('click', drawLot);
-document.getElementById('tossCoinsBtn').addEventListener('click', tossCoins);
-
-const ganZhi = [
-    "甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申", "癸酉",
-    "甲戌", "乙亥", "丙子", "丁丑", "戊寅", "己卯", "庚辰", "辛巳", "壬午", "癸未",
-    "甲申", "乙酉", "丙戌", "丁亥", "戊子", "己丑", "庚寅", "辛卯", "壬辰", "癸巳",
-    "甲午", "乙未", "丙申", "丁酉", "戊戌", "己亥", "庚子", "辛丑", "壬寅", "癸卯",
-    "甲辰", "乙巳", "丙午", "丁未", "戊申", "己酉", "庚戌", "辛亥", "壬子", "癸丑",
-    "甲寅", "乙卯", "丙辰", "丁巳", "戊午", "己未", "庚申", "辛酉", "壬戌", "癸亥"
-];
-
-let currentLotNumber = 0;
-
-function drawLot() {
-    currentLotNumber = Math.floor(Math.random() * 60) + 1;
-    const lotGanZhi = ganZhi[currentLotNumber - 1];
-    document.getElementById('result').innerText = `您抽到的籤號是：${currentLotNumber} (${lotGanZhi})`;
-    document.getElementById('prompt').style.display = 'block';
-    document.getElementById('tossCoinsBtn').style.display = 'block';
-    document.getElementById('coinTossResult').innerText = '';
-    document.getElementById('lotContent').innerText = '';
-}
-
-function tossCoins() {
-    document.getElementById('coinToss').style.display = 'block';
-    document.getElementById('coin1').classList.add('coin-flip');
-    document.getElementById('coin2').classList.add('coin-flip');
-
-    setTimeout(() => {
-        const coin1 = Math.random() > 0.5 ? '正' : '反';
-        const coin2 = Math.random() > 0.5 ? '正' : '反';
-        const resultType = getResultType(coin1, coin2);
-
-        document.getElementById('coin1').style.backgroundImage = coin1 === '正' ? 'url("正面.png")' : 'url("反面.png")';
-        document.getElementById('coin2').style.backgroundImage = coin2 === '正' ? 'url("正面.png")' : 'url("反面.png")';
-
-        document.getElementById('coinTossResult').innerText = `擲茭結果：${coin1} 和 ${coin2} (${resultType})`;
-        document.getElementById('coinToss').style.animation = '';
-
-        if (resultType === '聖茭') {
-            document.getElementById('lotContent').innerText = `籤詩內容：這是籤號${currentLotNumber} (${ganZhi[currentLotNumber - 1]})的籤詩`;
-        } else {
-            document.getElementById('lotContent').innerHTML = `
-                <p>${resultType}，再抽一次？</p>
-                <button onclick="drawLot()">再抽一次</button>
-            `;
+        function drawLot() {
+            currentLotNumber = Math.floor(Math.random() * 60) + 1;
+            const lotGanZhi = ganZhi[currentLotNumber - 1];
+            document.getElementById('result').innerText = `您抽到的籤號是：${currentLotNumber} (${lotGanZhi})`;
+            document.getElementById('prompt').style.display = 'block';
+            document.getElementById('tossCoinsBtn').style.display = 'block';
+            document.getElementById('coinTossResult').innerText = '';
+            document.getElementById('lotContent').innerText = '';
         }
-    }, 2000);
-}
 
-function getResultType(coin1, coin2) {
-    if (coin1 === '正' && coin2 === '反' || coin1 === '反' && coin2 === '正') {
-        return '聖茭';
-    } else if (coin1 === '反' && coin2 === '反') {
-        return '笑茭';
-    } else {
-        return '陰茭';
-    }
-}
-</script>
+        function tossCoins() {
+            document.getElementById('coinToss').style.display = 'block';
+            document.getElementById('coin1').classList.add('coin-flip');
+            document.getElementById('coin2').classList.add('coin-flip');
+
+            setTimeout(() => {
+                const coin1 = Math.random() > 0.5 ? '正' : '反';
+                const coin2 = Math.random() > 0.5 ? '正' : '反';
+                const resultType = getResultType(coin1, coin2);
+
+                document.getElementById('coin1').style.backgroundImage = coin1 === '正' ? 'url("正.png")' : 'url("反.png")';
+                document.getElementById('coin2').style.backgroundImage = coin2 === '正' ? 'url("正.png")' : 'url("反.png")';
+
+                document.getElementById('coinTossResult').innerText = `擲茭結果：${coin1} 和 ${coin2} (${resultType})`;
+                document.getElementById('coinToss').style.animation = '';
+
+                if (resultType === '聖茭') {
+                    document.getElementById('lotContent').innerText = `籤詩內容：這是籤號${currentLotNumber} (${ganZhi[currentLotNumber - 1]})的籤詩`;
+                } else {
+                    document.getElementById('lotContent').innerHTML = `
+                        <p>${resultType}，再抽一次？</p>
+                        <button onclick="drawLot()">再抽一次</button>
+                    `;
+                }
+            }, 2000);
+        }
+
+        function getResultType(coin1, coin2) {
+            if (coin1 === '正' && coin2 === '反' || coin1 === '反' && coin2 === '正') {
+                return '聖茭';
+            } else if (coin1 === '反' && coin2 === '反') {
+                return '笑茭';
+            } else {
+                return '陰茭';
+            }
+        }
+    </script>
+</body>
 </html>
