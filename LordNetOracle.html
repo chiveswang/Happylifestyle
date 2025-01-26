@@ -13,17 +13,39 @@
         #result, #lotContent, #coinTossResult {
             margin-top: 20px;
         }
+        #coinToss {
+            display: none;
+            margin-top: 20px;
+        }
+        .coin {
+            width: 100px;
+            height: 100px;
+            display: inline-block;
+            background-size: cover;
+            animation: flip 2s linear infinite;
+        }
+        @keyframes flip {
+            0% { transform: rotateY(0); }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); }
+        }
     </style>
 </head>
 <body>
     <h1>抽籤</h1>
     <button id="drawLotBtn">抽取籤</button>
     <div id="result"></div>
+    <div id="prompt" style="display:none;">請示網府千歲是否是這支簽</div>
     <button id="tossCoinsBtn" style="display:none;">擲茭</button>
+    <div id="coinToss">
+        <div class="coin" id="coin1"></div>
+        <div class="coin" id="coin2"></div>
+    </div>
     <div id="coinTossResult"></div>
     <div id="lotContent"></div>
     <script src="script.js"></script>
 </body>
+
 
 
 <script>
@@ -45,24 +67,46 @@ function drawLot() {
     currentLotNumber = Math.floor(Math.random() * 60) + 1;
     const lotGanZhi = ganZhi[currentLotNumber - 1];
     document.getElementById('result').innerText = `您抽到的籤號是：${currentLotNumber} (${lotGanZhi})`;
+    document.getElementById('prompt').style.display = 'block';
     document.getElementById('tossCoinsBtn').style.display = 'block';
     document.getElementById('coinTossResult').innerText = '';
     document.getElementById('lotContent').innerText = '';
 }
 
 function tossCoins() {
-    const coin1 = Math.random() > 0.5 ? '正' : '反';
-    const coin2 = Math.random() > 0.5 ? '正' : '反';
-    const isShengJiao = (coin1 !== coin2);
-    document.getElementById('coinTossResult').innerText = `擲茭結果：${coin1} 和 ${coin2}`;
+    document.getElementById('coinToss').style.display = 'block';
+    document.getElementById('coin1').style.backgroundImage = 'url("正面.png")';
+    document.getElementById('coin2').style.backgroundImage = 'url("反面.png")';
 
-    if (isShengJiao) {
-        document.getElementById('lotContent').innerText = `籤詩內容：這是籤號${currentLotNumber} (${ganZhi[currentLotNumber - 1]})的籤詩`;
+    setTimeout(() => {
+        const coin1 = Math.random() > 0.5 ? '正' : '反';
+        const coin2 = Math.random() > 0.5 ? '正' : '反';
+        const resultType = getResultType(coin1, coin2);
+
+        document.getElementById('coin1').style.backgroundImage = coin1 === '正' ? 'url("正面.png")' : 'url("反面.png")';
+        document.getElementById('coin2').style.backgroundImage = coin2 === '正' ? 'url("正面.png")' : 'url("反面.png")';
+
+        document.getElementById('coinTossResult').innerText = `擲茭結果：${coin1} 和 ${coin2} (${resultType})`;
+        document.getElementById('coinToss').style.animation = '';
+
+        if (resultType === '聖茭') {
+            document.getElementById('lotContent').innerText = `籤詩內容：這是籤號${currentLotNumber} (${ganZhi[currentLotNumber - 1]})的籤詩`;
+        } else {
+            document.getElementById('lotContent').innerHTML = `
+                <p>${resultType}，再抽一次？</p>
+                <button onclick="drawLot()">再抽一次</button>
+            `;
+        }
+    }, 2000);
+}
+
+function getResultType(coin1, coin2) {
+    if (coin1 === '正' && coin2 === '反' || coin1 === '反' && coin2 === '正') {
+        return '聖茭';
+    } else if (coin1 === '反' && coin2 === '反') {
+        return '笑茭';
     } else {
-        document.getElementById('lotContent').innerHTML = `
-            <p>不是聖茭，再抽一次？</p>
-            <button onclick="drawLot()">再抽一次</button>
-        `;
+        return '陰茭';
     }
 }
 </script>
