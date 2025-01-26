@@ -104,8 +104,8 @@
         function tossCoins() {
             document.getElementById('coinToss').style.display = 'block';
             let intervalId = setInterval(() => {
-                document.getElementById('coin1').style.backgroundImage = Math.random() > 0.5 ? 'url("正.png")' : 'url("反.png")';
-                document.getElementById('coin2').style.backgroundImage = Math.random() > 0.5 ? 'url("正.png")' : 'url("反.png")';
+                document.getElementById('coin1').style.backgroundImage = Math.random() > 0.5 ? 'url("正面.png")' : 'url("反面.png")';
+                document.getElementById('coin2').style.backgroundImage = Math.random() > 0.5 ? 'url("正面.png")' : 'url("反面.png")';
             }, 100);
 
             setTimeout(() => {
@@ -115,8 +115,8 @@
                 const coin2 = Math.random() > 0.5 ? '正' : '反';
                 const resultType = getResultType(coin1, coin2);
 
-                document.getElementById('coin1').style.backgroundImage = coin1 === '正' ? 'url("正.png")' : 'url("反.png")';
-                document.getElementById('coin2').style.backgroundImage = coin2 === '正' ? 'url("正.png")' : 'url("反.png")';
+                document.getElementById('coin1').style.backgroundImage = coin1 === '正' ? 'url("正面.png")' : 'url("反面.png")';
+                document.getElementById('coin2').style.backgroundImage = coin2 === '正' ? 'url("正面.png")' : 'url("反面.png")';
 
                 document.getElementById('coinTossResult').innerText = `擲茭結果：${coin1} 和 ${coin2} (${resultType})`;
 
