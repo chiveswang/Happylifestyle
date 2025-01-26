@@ -66,10 +66,9 @@
 </head>
 <body>
     <h1>抽籤</h1>
-    <button id="drawLotBtn">抽取籤</button>
+    <button id="actionButton">抽取籤</button>
     <div id="result"></div>
     <div id="prompt" style="display:none;">請示網府千歲是否是這支簽</div>
-    <button id="tossCoinsBtn" style="display:none;">擲茭</button>
     <div id="coinToss">
         <div class="coin" id="coin1"></div>
         <div class="coin" id="coin2"></div>
@@ -77,8 +76,7 @@
     <div id="coinTossResult"></div>
     <div id="lotContent"></div>
     <script>
-        document.getElementById('drawLotBtn').addEventListener('click', drawLot);
-        document.getElementById('tossCoinsBtn').addEventListener('click', tossCoins);
+        document.getElementById('actionButton').addEventListener('click', handleButtonClick);
 
         const ganZhi = [
             "甲子", "乙丑", "丙寅", "丁卯", "戊辰", "己巳", "庚午", "辛未", "壬申", "癸酉",
@@ -91,36 +89,44 @@
 
         let currentLotNumber = 0;
 
+        function handleButtonClick() {
+            const button = document.getElementById('actionButton');
+            if (button.innerText === '抽取籤') {
+                drawLot();
+            } else if (button.innerText === '擲茭') {
+                tossCoins();
+            } else if (button.innerText === '重新再抽') {
+                reset();
+            }
+        }
+
         function drawLot() {
             currentLotNumber = Math.floor(Math.random() * 60) + 1;
             const lotGanZhi = ganZhi[currentLotNumber - 1];
             document.getElementById('result').innerText = `您抽到的籤號是：${currentLotNumber} (${lotGanZhi})`;
             document.getElementById('prompt').style.display = 'block';
-            document.getElementById('tossCoinsBtn').style.display = 'block';
             document.getElementById('coinTossResult').innerText = '';
             document.getElementById('lotContent').innerText = '';
+            document.getElementById('coinToss').style.display = 'none';
+            document.getElementById('actionButton').innerText = '擲茭';
         }
 
         function tossCoins() {
             document.getElementById('coinToss').style.display = 'block';
-
-            // 開始隨機顯示正反茭杯圖片
             let intervalId = setInterval(() => {
-                document.getElementById('coin1').style.backgroundImage = Math.random() > 0.5 ? 'url("正.png")' : 'url("反.png")';
-                document.getElementById('coin2').style.backgroundImage = Math.random() > 0.5 ? 'url("正.png")' : 'url("反.png")';
+                document.getElementById('coin1').style.backgroundImage = Math.random() > 0.5 ? 'url("正面.png")' : 'url("反面.png")';
+                document.getElementById('coin2').style.backgroundImage = Math.random() > 0.5 ? 'url("正面.png")' : 'url("反面.png")';
             }, 100);
 
-            // 在兩秒後停止隨機顯示並顯示最終結果圖片
             setTimeout(() => {
                 clearInterval(intervalId);
 
-                // 顯示最終的靜態結果圖片
                 const coin1 = Math.random() > 0.5 ? '正' : '反';
                 const coin2 = Math.random() > 0.5 ? '正' : '反';
                 const resultType = getResultType(coin1, coin2);
 
-                document.getElementById('coin1').style.backgroundImage = coin1 === '正' ? 'url("正.png")' : 'url("反.png")';
-                document.getElementById('coin2').style.backgroundImage = coin2 === '正' ? 'url("正.png")' : 'url("反.png")';
+                document.getElementById('coin1').style.backgroundImage = coin1 === '正' ? 'url("正面.png")' : 'url("反面.png")';
+                document.getElementById('coin2').style.backgroundImage = coin2 === '正' ? 'url("正面.png")' : 'url("反面.png")';
 
                 document.getElementById('coinTossResult').innerText = `擲茭結果：${coin1} 和 ${coin2} (${resultType})`;
 
@@ -129,10 +135,20 @@
                 } else {
                     document.getElementById('lotContent').innerHTML = `
                         <p>${resultType}，再抽一次？</p>
-                        <button onclick="drawLot()">再抽一次</button>
                     `;
                 }
+
+                document.getElementById('actionButton').innerText = '重新再抽';
             }, 2000);
+        }
+
+        function reset() {
+            document.getElementById('result').innerText = '';
+            document.getElementById('prompt').style.display = 'none';
+            document.getElementById('coinTossResult').innerText = '';
+            document.getElementById('lotContent').innerText = '';
+            document.getElementById('coinToss').style.display = 'none';
+            document.getElementById('actionButton').innerText = '抽取籤';
         }
 
         function getResultType(coin1, coin2) {
