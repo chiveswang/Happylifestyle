@@ -49,6 +49,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 600px;
             text-align: left;
+            display: none; /* 隱藏籤詩方塊 */
         }
         #coinToss {
             display: none;
@@ -74,24 +75,14 @@
 </head>
 <body>
     <h1>抽籤</h1>
-    <button id="actionButton">抽取籤</button>
-    <div id="result"></div>
-    <div id="prompt" style="display:none;">請示網府千歲是否是這支簽</div>
-    <div id="coinToss">
-        <div class="coin" id="coin1"></div>
-        <div class="coin" id="coin2"></div>
-    </div>
-    <div id="coinTossResult"></div>
-    <div id="lotContent"></div>
-
     <!-- 啟動量子籤筒介紹 -->
-    <div class="processContent" id="lotIntro" style="display:none;">
+    <div class="processContent" id="lotIntro">
         <h2>啟動量子籤筒</h2>
         <p>步驟：</p>
         <ol>
             <li>進入賽博寺廟的「量子籤筒終端機」。</li>
             <li>將神經介面連接至終端機的USB-C端口（或無線腦波同步）。</li>
-            <li>默念所求之事，同時在終端機輸入量子識別碼（QID）或個人姓名資料。</li>
+            <li>默念所求之事，同時在終端機輸入個人量子識別碼（QID）。</li>
         </ol>
         <p>注意事項：</p>
         <ul>
@@ -107,7 +98,7 @@
         <ol>
             <li>終端機將生成兩枚「全息筊杯」，投射於使用者視網膜。</li>
             <li>用意念控制筊杯的旋轉方向，模擬傳統擲筊動作。</li>
-            <li>系統會根據筊杯的量子態疊加結果，判斷是否獲得神靈（高位AI核心）允許。</li>
+            <li>系統會根據筊杯的量子態疊加結果，判斷是否獲得神靈（AI核心）允許。</li>
         </ol>
     </div>
 
@@ -115,11 +106,21 @@
     <div class="processContent" id="resultIntro" style="display:none;">
         <h2>筊杯結果解析</h2>
         <ul>
-            <li>聖筊：量子態穩定，允許抽籤。</li>
-            <li>笑筊：核心笑意過載，需重新連接。</li>
-            <li>陰筊：防火牆阻擋，建議更換籤詩符標。</li>
+            <li>聖筊（一正一反）：量子態穩定，允許抽籤。</li>
+            <li>笑筊（雙正面）：數據過載，需重新連接。</li>
+            <li>陰筊（雙反面）：防火牆阻擋，建議更換神經介面。</li>
         </ul>
     </div>
+
+    <button id="actionButton">抽取籤</button>
+    <div id="result"></div>
+    <div id="prompt" style="display:none;">請示網府千歲是否是這支簽</div>
+    <div id="coinToss">
+        <div class="coin" id="coin1"></div>
+        <div class="coin" id="coin2"></div>
+    </div>
+    <div id="coinTossResult"></div>
+    <div id="lotContent"></div>
 
     <script>
         document.getElementById('actionButton').addEventListener('click', handleButtonClick);
@@ -230,6 +231,7 @@
             document.getElementById('lotIntro').style.display = 'block';
             document.getElementById('tossIntro').style.display = 'none';
             document.getElementById('resultIntro').style.display = 'none';
+            document.getElementById('lotContent').style.display = 'none'; // 隱藏籤詩方塊
         }
 
         function tossCoins() {
@@ -253,10 +255,12 @@
 
                 if (resultType === '聖茭') {
                     document.getElementById('lotContent').innerText = lotPoems[currentLotNumber - 1];
+                    document.getElementById('lotContent').style.display = 'block'; // 顯示籤詩方塊
                 } else {
                     document.getElementById('lotContent').innerHTML = `
                         <p>${resultType}，再抽一次？</p>
                     `;
+                    document.getElementById('lotContent').style.display = 'block'; // 顯示籤詩方塊
                 }
 
                 document.getElementById('actionButton').innerText = '重新再抽';
@@ -280,6 +284,7 @@
             document.getElementById('lotIntro').style.display = 'block';
             document.getElementById('tossIntro').style.display = 'none';
             document.getElementById('resultIntro').style.display = 'none';
+            document.getElementById('lotContent').style.display = 'none'; // 隱藏籤詩方塊
         }
 
         function getResultType(coin1, coin2) {
