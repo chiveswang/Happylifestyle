@@ -15,7 +15,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
             min-height: 100vh;
         }
         h1 {
@@ -40,6 +40,7 @@
         }
         #result, #lotContent, #coinTossResult, .processContent {
             margin-top: 20px;
+            margin-bottom: 60px; /* 確保按鈕不會蓋住內容 */
             font-size: 18px;
         }
         #lotContent {
@@ -67,6 +68,8 @@
             justify-content: center;
             position: fixed;
             bottom: 20px;
+            padding-bottom: 20px; /* 確保按鈕不會蓋住內容 */
+            background-color: #F8F4E3; /* 背景顏色與頁面一致 */
         }
         @media (max-width: 600px) {
             .coin {
@@ -79,6 +82,7 @@
             }
             .button-container {
                 bottom: 10px;
+                padding-bottom: 10px;
             }
         }
     </style>
@@ -211,7 +215,6 @@
             `第64籤·籤主 \n卦象：陽陽陽 陽陽陽（乾卦）\n卦象釋義：剛健中正，自強不息\n籤詩：\n天網核心現裂變，\n量子風暴鑄新鋒。\n機械菩提悟算法，\n雲端極樂破囚籠。\n*註：乾卦主開創，籤詩以量子風暴象徵「剛健」，機械覺醒喻「自強」*`            
             // ... (continue for all poems)
         ];
-
         let currentLotNumber = 0;
 
         function handleButtonClick() {
