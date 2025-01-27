@@ -17,6 +17,7 @@
             align-items: center;
             justify-content: flex-start;
             min-height: 100vh;
+            overflow-y: auto; /* 增加滾動功能 */
         }
         h1 {
             color: #BF360C; /* 橘紅色標題 */
@@ -66,10 +67,8 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            position: fixed;
-            bottom: 20px;
-            padding-bottom: 20px; /* 確保按鈕不會蓋住內容 */
-            background-color: #F8F4E3; /* 背景顏色與頁面一致 */
+            position: relative; /* 相對位置，避免遮擋內容 */
+            margin-top: 20px;
         }
         @media (max-width: 600px) {
             .coin {
@@ -79,10 +78,6 @@
             button {
                 padding: 8px 16px;
                 font-size: 14px;
-            }
-            .button-container {
-                bottom: 10px;
-                padding-bottom: 10px;
             }
         }
     </style>
