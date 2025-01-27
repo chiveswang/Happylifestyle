@@ -38,7 +38,7 @@
         button:hover {
             background-color: #D84315; /* 深橘紅色 */
         }
-        #result, #lotContent, #coinTossResult, #processContent {
+        #result, #lotContent, #coinTossResult, .processContent {
             margin-top: 20px;
             font-size: 18px;
         }
@@ -83,8 +83,9 @@
     </div>
     <div id="coinTossResult"></div>
     <div id="lotContent"></div>
-    
-    <div id="processContent">
+
+    <!-- 啟動量子籤筒介紹 -->
+    <div class="processContent" id="lotIntro" style="display:none;">
         <h2>啟動量子籤筒</h2>
         <p>步驟：</p>
         <ol>
@@ -97,7 +98,10 @@
             <li>確保神經介面防火牆已更新至最新版本，避免數據洩漏。</li>
             <li>若出現「量子糾纏異常」提示，請立即斷開連接並重啟系統。</li>
         </ul>
-        
+    </div>
+
+    <!-- 擲筊確認介紹 -->
+    <div class="processContent" id="tossIntro" style="display:none;">
         <h2>擲筊確認</h2>
         <p>步驟：</p>
         <ol>
@@ -105,14 +109,18 @@
             <li>用意念控制筊杯的旋轉方向，模擬傳統擲筊動作。</li>
             <li>系統會根據筊杯的量子態疊加結果，判斷是否獲得神靈（AI核心）允許。</li>
         </ol>
-        <p>筊杯結果解析：</p>
+    </div>
+
+    <!-- 筊杯結果解析介紹 -->
+    <div class="processContent" id="resultIntro" style="display:none;">
+        <h2>筊杯結果解析</h2>
         <ul>
             <li>聖筊（一正一反）：量子態穩定，允許抽籤。</li>
             <li>笑筊（雙正面）：數據過載，需重新連接。</li>
             <li>陰筊（雙反面）：防火牆阻擋，建議更換神經介面。</li>
         </ul>
     </div>
-    
+
     <script>
         document.getElementById('actionButton').addEventListener('click', handleButtonClick);
 
@@ -217,6 +225,11 @@
             document.getElementById('lotContent').innerText = '';
             document.getElementById('coinToss').style.display = 'none';
             document.getElementById('actionButton').innerText = '擲茭';
+
+            // 顯示啟動量子籤筒介紹
+            document.getElementById('lotIntro').style.display = 'block';
+            document.getElementById('tossIntro').style.display = 'none';
+            document.getElementById('resultIntro').style.display = 'none';
         }
 
         function tossCoins() {
@@ -247,6 +260,11 @@
                 }
 
                 document.getElementById('actionButton').innerText = '重新再抽';
+
+                // 顯示筊杯結果解析介紹
+                document.getElementById('lotIntro').style.display = 'none';
+                document.getElementById('tossIntro').style.display = 'none';
+                document.getElementById('resultIntro').style.display = 'block';
             }, 2000);
         }
 
@@ -257,6 +275,11 @@
             document.getElementById('lotContent').innerText = '';
             document.getElementById('coinToss').style.display = 'none';
             document.getElementById('actionButton').innerText = '抽取籤';
+
+            // 顯示抽取籤介紹
+            document.getElementById('lotIntro').style.display = 'block';
+            document.getElementById('tossIntro').style.display = 'none';
+            document.getElementById('resultIntro').style.display = 'none';
         }
 
         function getResultType(coin1, coin2) {
