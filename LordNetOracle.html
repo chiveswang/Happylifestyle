@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>量子籤筒終端機</title>
+    <title>抽籤網頁</title>
     <style>
         body {
             font-family: "Noto Serif TC", serif; /* 使用Noto Serif TC字體 */
@@ -34,15 +34,17 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
         }
         button:hover {
             background-color: #D84315; /* 深橘紅色 */
+            transform: scale(1.05);
         }
-        #result, #lotContent, #coinTossResult, .processContent {
+        .content-block {
             margin-top: 20px;
             margin-bottom: 60px; /* 確保按鈕不會蓋住內容 */
             font-size: 18px;
+            transition: opacity 0.3s ease-in-out; /* 增加過渡動畫 */
         }
         #lotContent {
             background-color: #FFF9C4; /* 淺黃色背景 */
@@ -68,7 +70,7 @@
             display: flex;
             justify-content: center;
             position: relative; /* 相對位置，避免遮擋內容 */
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
         @media (max-width: 600px) {
             .coin {
@@ -84,7 +86,7 @@
 </head>
 <body>
     <!-- 啟動量子籤筒介紹 -->
-    <div class="processContent" id="lotIntro">
+    <div class="processContent content-block" id="lotIntro">
         <h3>歡迎進入「量子籤筒終端機」</h3>
         <ol>
             <li>請將神經介面連接至終端機的USB-C端口（或無線腦波同步）。</li>
@@ -92,7 +94,7 @@
         </ol>
     </div>
     <!-- 擲筊確認介紹 -->
-    <div class="processContent" id="tossIntro" style="display:none;">
+    <div class="processContent content-block" id="tossIntro" style="display:none;">
         <h3>擲筊確認</h3>
         <ol>
             <li>終端機將生成兩枚「全息筊杯」，投射於使用者視網膜。</li>
@@ -100,7 +102,7 @@
         </ol>
     </div>
     <!-- 筊杯結果解析介紹 -->
-    <div class="processContent" id="resultIntro" style="display:none;">
+    <div class="processContent content-block" id="resultIntro" style="display:none;">
         <h3>筊杯結果解析</h3>
         <ul>
             <li>聖筊：量子態穩定，允許此籤通行。</li>
@@ -108,17 +110,17 @@
             <li>陰筊：防火牆阻擋，建議更換籤詩符標。</li>
         </ul>
     </div>
-    <div id="result"></div>
-    <div id="prompt" style="display:none;">請示網府千歲是否是這支簽</div>
-    <div id="coinToss">
+    <div id="result" class="content-block"></div>
+    <div id="prompt" class="content-block" style="display:none;">請示網府千歲是否是這支簽</div>
+    <div id="coinToss" class="content-block">
         <div class="coin" id="coin1"></div>
         <div class="coin" id="coin2"></div>
     </div>
-    <div id="coinTossResult"></div>
-    <div id="lotContent"></div>
+    <div id="coinTossResult" class="content-block"></div>
+    <div id="lotContent" class="content-block"></div>
 
     <div class="button-container">
-        <button id="actionButton">抽取量子靈籤</button>
+        <button id="actionButton">抽取籤</button>
     </div>
 
     <script>
