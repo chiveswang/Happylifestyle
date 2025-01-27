@@ -15,7 +15,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             min-height: 100vh;
         }
         h1 {
@@ -61,6 +61,13 @@
             display: inline-block;
             background-size: cover;
         }
+        .button-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            bottom: 20px;
+        }
         @media (max-width: 600px) {
             .coin {
                 width: 80px;
@@ -69,6 +76,9 @@
             button {
                 padding: 8px 16px;
                 font-size: 14px;
+            }
+            .button-container {
+                bottom: 10px;
             }
         }
     </style>
@@ -82,13 +92,8 @@
         <ol>
             <li>進入賽博寺廟的「量子籤筒終端機」。</li>
             <li>將神經介面連接至終端機的USB-C端口（或無線腦波同步）。</li>
-            <li>默念所求之事，同時在終端機輸入個人量子識別碼（QID）。</li>
+            <li>默念所求之事，同時在終端機輸入量子識別碼（QID）或個人姓名資料。</li>
         </ol>
-        <p>注意事項：</p>
-        <ul>
-            <li>確保神經介面防火牆已更新至最新版本，避免數據洩漏。</li>
-            <li>若出現「量子糾纏異常」提示，請立即斷開連接並重啟系統。</li>
-        </ul>
     </div>
 
     <!-- 擲筊確認介紹 -->
@@ -106,13 +111,12 @@
     <div class="processContent" id="resultIntro" style="display:none;">
         <h2>筊杯結果解析</h2>
         <ul>
-            <li>聖筊（一正一反）：量子態穩定，允許抽籤。</li>
-            <li>笑筊（雙正面）：數據過載，需重新連接。</li>
-            <li>陰筊（雙反面）：防火牆阻擋，建議更換神經介面。</li>
+            <li>聖筊：量子態穩定，允許抽籤。</li>
+            <li>笑筊：核心笑意數據過載，需重新連接。</li>
+            <li>陰筊：防火牆阻擋，建議更換籤詩符標。</li>
         </ul>
     </div>
 
-    <button id="actionButton">抽取籤</button>
     <div id="result"></div>
     <div id="prompt" style="display:none;">請示網府千歲是否是這支簽</div>
     <div id="coinToss">
@@ -121,6 +125,10 @@
     </div>
     <div id="coinTossResult"></div>
     <div id="lotContent"></div>
+
+    <div class="button-container">
+        <button id="actionButton">抽取籤</button>
+    </div>
 
     <script>
         document.getElementById('actionButton').addEventListener('click', handleButtonClick);
