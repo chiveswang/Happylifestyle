@@ -8,7 +8,7 @@
         body {
             font-family: "Noto Serif TC", serif;
             text-align: center;
-            background-color: #F8F4E3;
+            background: linear-gradient(135deg, #2E1437, #1A0A1F);
             color: #5D4037;
             padding: 10px;
             margin: 0;
@@ -24,6 +24,7 @@
             text-shadow: 1px 1px 2px #000000;
             font-size: 2em;
             margin-bottom: 10px;
+            cursor: pointer;
         }
         button {
             background-color: #BF360C;
@@ -55,6 +56,8 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             display: none;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
         }
         #coinToss {
             display: none;
@@ -105,10 +108,25 @@
                 font-size: 12px;
             }
         }
+        .oracle-button {
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: min(90vw, 400px);
+            padding: 4vh 2vw;
+        }
+        .oracle-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #9D4BFF;
+        }
+        .card-content {
+            backface-visibility: hidden;
+        }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <h1>抽籤</h1>
+    <h1 id="title">抽籤</h1>
     <!-- 啟動量子籤筒介紹 -->
     <div class="processContent content-block" id="lotIntro">
         <h3>歡迎進入「量子籤筒終端機」</h3>
@@ -144,12 +162,34 @@
     <div id="lotContent" class="content-block"></div>
 
     <div class="button-container">
-        <button id="actionButton">抽取籤</button>
+        <button id="actionButton" class="oracle-button">抽取籤</button>
     </div>
 
     <a href="https://payment.ecpay.com.tw/Broadcaster/Donate/67F1B107D56275F878BB1D1CD7F023E1" target="_blank" class="donate-button">添香油</a>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"></script>
     <script>
+        const clickSound = new Howl({ src: ['magic-bell.mp3'] });
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(btn => btn.addEventListener('click', () => clickSound.play()));
+
+        const title = document.getElementById('title');
+        let clickCount = 0;
+        title.addEventListener('click', () => {
+            if(++clickCount === 5) {
+                showSecretMode(); // 啟動暗黑主題或反向占卜
+            }
+        });
+
+        if (window.DeviceMotionEvent) {
+            let shakeCount = 0;
+            window.addEventListener('devicemotion', (e) => {
+                if (Math.abs(e.acceleration.x) > 15) {
+                    if(++shakeCount % 2 === 0) getOracle('random');
+                }
+            });
+        }
+
         document.getElementById('actionButton').addEventListener('click', handleButtonClick);
 
         const ganZhi = [
@@ -230,6 +270,15 @@
             // ... (continue for all poems)
         ];
         let currentLotNumber = 0;
+
+        function showResult(text) {
+            const resultDiv = document.getElementById("lotContent");
+            resultDiv.style.transform = "rotateY(180deg)";
+            setTimeout(() => {
+                resultDiv.innerHTML = `<div class="card-content">${text}</div>`;
+                resultDiv.style.transform = "rotateY(0deg)";
+            }, 500);
+        }
 
         function handleButtonClick() {
             const button = document.getElementById('actionButton');
@@ -315,6 +364,14 @@
             } else {
                 return '陰茭';
             }
+        }
+
+        function showSecretMode() {
+            alert('啟動暗黑主題或反向占卜');
+        }
+
+        function getOracle(type) {
+            alert('進行隨機占卜');
         }
     </script>
 </body>
